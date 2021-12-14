@@ -9,27 +9,45 @@ namespace MTCG
     class User
     {
         public string _name { get; set; }
+        public int _coins {get; set; }
+        public int _elo { get; set; }
 
         public Stack _userstack;
         public Deck _userdeck; 
         public User(string name)
         {
             _name = name;
+            _coins = 20;
+            _elo = 100; 
         }
 
         public User(User prevUser)
         {
-            
+            /*
+            Console.WriteLine("EINS");
             _name = prevUser._name;
             _userstack = prevUser._userstack;
-            _userdeck = prevUser._userdeck;
+            _userstack._stack = prevUser._userstack._stack;
+            
+            Console.WriteLine("ZWEI");
+            for (int i = 0; i < 4; i++)
+            {
+                Console.WriteLine("DREI");
+                Console.WriteLine(prevUser._userdeck._deck[i]._name);
+                Card card = new Card(prevUser._userdeck._deck[i]._name, prevUser._userdeck._deck[i]._damage, prevUser._userdeck._deck[i]._cardtype, prevUser._userdeck._deck[i]._elementtype, prevUser._userdeck._deck[i]._racetype);
+                Console.WriteLine("PRINTED CARD:");
+                card.PrintCard();
+                _userdeck._deck.AddCard(card);
+                    //_userdeck.AddCard(new Card(prevUser._userdeck._deck[i]._name, prevUser._userdeck._deck[i]._damage, prevUser._userdeck._deck[i]._cardtype, prevUser._userdeck._deck[i]._elementtype, prevUser._userdeck._deck[i]._racetype));
+                Console.WriteLine("VIER");
+            }
+            //new Card("Dragon", 10, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.dragon);
 
-            _userstack._stack = prevUser._userstack._stack; 
-            _userdeck._deck = prevUser._userdeck._deck;
 
-
+            
             Console.WriteLine("Neuer Constructor verwendet!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            _userstack.PrintStack();
+            //_userstack.PrintStack();
+            */
         }
 
 

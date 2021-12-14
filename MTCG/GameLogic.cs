@@ -9,102 +9,105 @@ namespace MTCG
     class GameLogic
     {
 
-        public int BattleLogic(User originaluser1, User originaluser2)
+        public int BattleLogic(User user1, User user2)
         {
             var rand = new Random();
             int winner = 0;
             int rounds = 1;
 
-            User user1 = new User(originaluser1);
-            User user2 = new User(originaluser2);
 
+            List<Card> tempdeck1 = new List<Card>(user1._userdeck._deck); 
+            List<Card> tempdeck2 = new List<Card>(user2._userdeck._deck); 
+
+            
             Card cardp1;
             Card cardp2;
 
             while (true)
             {
+                
+                Console.WriteLine("Deckcount" + tempdeck1.Count + "   " + tempdeck2.Count);
+                int rnumber1 = rand.Next(0, tempdeck1.Count);
+                int rnumber2 = rand.Next(0, tempdeck2.Count);
 
-                int rnumber1 = rand.Next(0, user1._userdeck._deck.Count);
-                int rnumber2 = rand.Next(0, user2._userdeck._deck.Count);
 
-
-                cardp1 = user1._userdeck._deck[rnumber1];
-                cardp2 = user2._userdeck._deck[rnumber2];
+                cardp1 = tempdeck1[rnumber1];
+                cardp2 = tempdeck2[rnumber2];
 
                 Console.WriteLine($"Round {rounds}");
-                Console.WriteLine($"Left Cards P1: {user1._userdeck._deck.Count}");
-                Console.WriteLine($"Left Cards P2: {user2._userdeck._deck.Count}");
+                Console.WriteLine($"Left Cards P1: {tempdeck1.Count}");
+                Console.WriteLine($"Left Cards P2: {tempdeck2.Count}");
                 Console.WriteLine(); 
                 
                 Console.Write("Chosen Card P1: ");
                 cardp1.PrintCard();
                 Console.Write("Chosen Card P2: ");
-                cardp2.PrintCard(); 
-                
+                cardp2.PrintCard();
 
+                winner = calcWinner(cardp1, cardp2);
 
-                if (cardp1._weakness == cardp2._racetype && (cardp1._elementweakness == cardp2._elementtype || cardp1._elementweakness == ElementTypesEnum.ElementTypes.none))
-                {
-                    Console.WriteLine("Player 2 won due to weakness");
-                    winner = 2;
-
-                }
-                else if (cardp2._weakness == cardp1._racetype && (cardp2._elementweakness == cardp1._elementtype || cardp2._elementweakness == ElementTypesEnum.ElementTypes.none))
-                {
-                    Console.WriteLine("Player 1 won due to weakness");
-                    winner = 1;
-                }
-                else
-                {
-                    if (cardp2._damage * cardp2.IsEffective(cardp1) > cardp1._damage * cardp1.IsEffective(cardp2))
-                    {
-                        Console.WriteLine("Player 2 won the battle");
-                        winner = 2;
-
-                    }
-                    else if (cardp2._damage * cardp2.IsEffective(cardp1) < cardp1._damage * cardp1.IsEffective(cardp2))
-                    {
-                        Console.WriteLine("Player 1 won the battle");
-                        winner = 1;
-                    }
-                    else
-                    {
-                        Console.WriteLine("DRAW!");
-                        winner = 0;
-
-                    }
-                }
 
                 if (winner == 1)
                 {
-                    user1._userdeck.AddCard(user2._userdeck._deck[rnumber2]);
-                    user2._userdeck._deck.RemoveAt(rnumber2);
+                    tempdeck1.Add(tempdeck2[rnumber2]);
+                    tempdeck2.RemoveAt(rnumber2);
                 }
                 else if (winner == 2)
                 {
-                    user2._userdeck.AddCard(user1._userdeck._deck[rnumber1]);
-                    user1._userdeck._deck.RemoveAt(rnumber1);
+                    tempdeck2.Add(tempdeck1[rnumber1]);
+                    tempdeck1.RemoveAt(rnumber1);
                 }
-                else
-                {
-
+                else 
+                { 
+                
                 }
 
-                /*
-                Console.WriteLine("Deck von Spieler 1:");
-                user1._userdeck.PrintDeck();
-                Console.WriteLine("Deck von Spieler 2:");
-                user2._userdeck.PrintDeck();
-                */
-
-                if (user1._userdeck._deck.Count == 0) { return 2; }
-                if (user2._userdeck._deck.Count == 0) { return 1; }
+                
+                if (tempdeck1.Count == 0) { return 2; }
+                if (tempdeck2.Count == 0) { return 1; }
                 if (rounds == 100) { return 0; }
 
                 rounds++;
                 Console.WriteLine(); 
             }
         }
+
+
+        public int calcWinner(Card cardp1, Card cardp2)
+        {
+            if (cardp1._weakness == cardp2._racetype && (cardp1._elementweakness == cardp2._elementtype || cardp1._elementweakness == ElementTypesEnum.ElementTypes.none))
+            {
+                Console.WriteLine("Player 2 won due to weakness");
+                return 2;
+
+            }
+            else if (cardp2._weakness == cardp1._racetype && (cardp2._elementweakness == cardp1._elementtype || cardp2._elementweakness == ElementTypesEnum.ElementTypes.none))
+            {
+                Console.WriteLine("Player 1 won due to weakness");
+                return 1;
+            }
+            else
+            {
+                if (cardp2._damage * cardp2.IsEffective(cardp1) > cardp1._damage * cardp1.IsEffective(cardp2))
+                {
+                    Console.WriteLine("Player 2 won the battle");
+                    return 2;
+                }
+                else if (cardp2._damage * cardp2.IsEffective(cardp1) < cardp1._damage * cardp1.IsEffective(cardp2))
+                {
+                    Console.WriteLine("Player 1 won the battle");
+                    return 1;
+                }
+                else
+                {
+                    Console.WriteLine("DRAW!");
+                    return 0;
+
+                }
+            }
+        }
+
+
 
     }
 }

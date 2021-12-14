@@ -11,6 +11,9 @@ namespace MTCG
 
         public void Start()
         {
+            Database db = new Database();
+            db.connect();
+
             Card card1 = new Card("Dragon", 10, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.dragon);
             Card card2 = new Card("Firedragon", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.dragon);
             Card card3 = new Card("Waterdragon", 15, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.dragon);
@@ -81,7 +84,7 @@ namespace MTCG
                 switch (select)
                 {
                     case 1:
-                        Console.WriteLine(gamelogic.BattleLogic(user1, user2) + "HAT GEWONNEN"); //Draw output adden
+                        Console.WriteLine("Player " + gamelogic.BattleLogic(user1, user2) + " won the match"); //Draw output adden
                         Console.WriteLine(user1._userdeck._deck.Count);
                         Console.WriteLine(user2._userdeck._deck.Count);
 
@@ -95,6 +98,8 @@ namespace MTCG
 
                         break;
                     case 3:
+                        //db.addUser();
+                        //db.outputTest(); 
                         break;
                     case 4:
                         return; 

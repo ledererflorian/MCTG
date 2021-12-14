@@ -36,5 +36,12 @@ namespace MTCG
             return _deck.Count;  
         }
 
+        /*
+        public Card GetCardAtIndex(int index)
+        {
+            Console.WriteLine("OUTPUTTT:" + _deck[index]);
+            return _deck[index];
+        }
+        */
     }
 }
