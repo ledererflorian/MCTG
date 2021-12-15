@@ -12,7 +12,6 @@ namespace MTCG
         public void Start()
         {
             Database db = new Database();
-            db.connect();
 
             Card card1 = new Card("Dragon", 10, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.dragon);
             Card card2 = new Card("Firedragon", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.dragon);
@@ -71,10 +70,34 @@ namespace MTCG
             user2._userdeck.AddCard(card6);
             user2._userdeck.AddCard(card7);
             user2._userdeck.AddCard(card8);
-
+            bool loggedin = false; 
             int select = 0;
             Console.WriteLine("Welcome to MTCG\n");
-            
+
+            while (!loggedin)
+            {
+                Console.WriteLine("1: Register\n2: Login\n3: Quit");
+                select = Convert.ToInt32(Console.ReadLine());
+                //Console.Clear(); 
+                switch (select)
+                {
+                    case 1:
+                        RegisterUser(); 
+                        break;
+                    case 2:
+                        if(LoginUser() != "false")
+                        {
+                            loggedin = true; 
+                        } 
+                        break;
+                    case 3:
+                        return; 
+                        
+                    default:
+                        Console.WriteLine("Invalid input");
+                        continue;
+                }
+            }
 
             while (true)
             {
@@ -109,6 +132,51 @@ namespace MTCG
                 }
             }
 
+        }
+
+        public void RegisterUser()
+        {
+            Database db = new Database();
+            string username;
+            string password;
+
+            Console.WriteLine("Enter username: ");
+            username = Convert.ToString(Console.ReadLine());
+            Console.WriteLine("Enter password: ");
+            password = Convert.ToString(Console.ReadLine());
+
+            if(db.userExists(username) == true)
+            {
+                Console.WriteLine("Error: Username already exists!");
+            } else
+            {
+                db.addUser(username, password, 20, 100);
+                Console.WriteLine("Account successfuly created!");
+            }
+        }
+
+        public string LoginUser()
+        {
+            Database db = new Database();
+            string username;
+            string password;
+
+            Console.WriteLine("Enter username: ");
+            username = Convert.ToString(Console.ReadLine());
+            Console.WriteLine("Enter password: ");
+            password = Convert.ToString(Console.ReadLine());
+
+            if (db.loginUser(username, password) == true)
+            {
+                Console.WriteLine("Login successful!");
+                return username; 
+            }
+            else
+            {
+                db.addUser(username, password, 20, 100);
+                Console.WriteLine("Login failed!");
+                return "false"; 
+            }
         }
 
     }
