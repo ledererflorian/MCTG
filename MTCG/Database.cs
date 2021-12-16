@@ -73,7 +73,7 @@ namespace MTCG
             }
         }
 
-        public bool loginUser(string name, string password)
+        public int loginUser(string name, string password)
         {
             connect();
             using (var cmd = new NpgsqlCommand("SELECT * FROM users WHERE name = @n AND password = @p", connection))
@@ -85,14 +85,18 @@ namespace MTCG
 
                 if (reader.HasRows)
                 {
-                    //reader.Read();
+                    reader.Read();
+                    //Console.WriteLine("UserID: " + reader["id"]);
+                    int result = Convert.ToInt32(reader["id"]);
                     disconnect();
-                    return true;
+                    return result;
+                    
                 }
+
                 else
                 {
                     disconnect();
-                    return false;
+                    return 0;
                 }
 
                 /*
@@ -106,6 +110,42 @@ namespace MTCG
                     return 1; 
                 } 
                 */
+            }
+        }
+
+        public void addCard(string name, int damage, int cardtype, int elementtype, int racetype)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("INSERT INTO cards (name, damage, cardtype, elementtype, racetype) VALUES (@n, @d, @c, @e, @r)", connection))
+            {
+                cmd.Parameters.AddWithValue("n", name);
+                cmd.Parameters.AddWithValue("d", damage);
+                cmd.Parameters.AddWithValue("c", cardtype);
+                cmd.Parameters.AddWithValue("e", elementtype);
+                cmd.Parameters.AddWithValue("r", racetype);
+                cmd.ExecuteNonQuery();
+            }
+            disconnect();
+        }
+
+
+        public void getCard()
+        {
+            int id = 380; 
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM cards WHERE id = @i", connection))
+            {
+                cmd.Parameters.AddWithValue("i", id);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                //string name; 
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    Console.WriteLine("UserID: " + reader["name"]);
+                    disconnect();
+                }
+
             }
         }
 

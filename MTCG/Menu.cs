@@ -73,6 +73,7 @@ namespace MTCG
             bool loggedin = false; 
             int select = 0;
             Console.WriteLine("Welcome to MTCG\n");
+            int loggedinID;
 
             while (!loggedin)
             {
@@ -85,14 +86,23 @@ namespace MTCG
                         RegisterUser(); 
                         break;
                     case 2:
-                        if(LoginUser() != "false")
+                        if((loggedinID = LoginUser()) != 0)
                         {
-                            loggedin = true; 
-                        } 
+                            loggedin = true;
+                            Console.WriteLine("Loggedin ID: " + loggedinID);
+                        }  else
+                        {
+                            loggedinID = 0; 
+                        }
                         break;
                     case 3:
-                        return; 
-                        
+                        return;
+                    case 4:
+                        //CreateCardsInDB(); 
+                        db.getCard(); 
+                        break;
+
+
                     default:
                         Console.WriteLine("Invalid input");
                         continue;
@@ -155,9 +165,10 @@ namespace MTCG
             }
         }
 
-        public string LoginUser()
+        public int LoginUser()
         {
             Database db = new Database();
+            int success = 0; 
             string username;
             string password;
 
@@ -166,18 +177,103 @@ namespace MTCG
             Console.WriteLine("Enter password: ");
             password = Convert.ToString(Console.ReadLine());
 
-            if (db.loginUser(username, password) == true)
+            if ((success = db.loginUser(username, password)) == 0)
             {
-                Console.WriteLine("Login successful!");
-                return username; 
+                Console.WriteLine("Login failed!");
+                return 0;
+
             }
             else
             {
-                db.addUser(username, password, 20, 100);
-                Console.WriteLine("Login failed!");
-                return "false"; 
+                Console.WriteLine("Login successful!");
+                return success;
             }
         }
+
+
+        public void CreateCardsInDB()
+        {
+            Database db = new Database(); 
+            for(int i = 0; i < 101; i++)
+            {
+                string name = "";
+                int damage = 0;
+                int cardtype = 0;
+                int elementtype = 0;
+                int racetype = 0;
+
+                var rand = new Random();
+                int random = rand.Next(0, 8);
+
+                switch (random)
+                {
+                    case 0:
+                        name = "Goblin";
+                        racetype = 0;
+                        cardtype = 0;
+                        break;
+                    case 1:
+                        name = "Dragon";
+                        racetype = 1;
+                        cardtype = 0;
+                        break;
+                    case 2:
+                        name = "Wizzard";
+                        racetype = 2;
+                        cardtype = 0;
+                        break;
+                    case 3:
+                        name = "Ork";
+                        racetype = 3;
+                        cardtype = 0;
+                        break;
+                    case 4:
+                        name = "Knight";
+                        racetype = 4;
+                        cardtype = 0;
+                        break;
+                    case 5:
+                        name = "Kraken";
+                        racetype = 5;
+                        cardtype = 0;
+                        break;
+                    case 6:
+                        name = "Elf";
+                        racetype = 6;
+                        cardtype = 0;
+                        break;
+                    case 7:
+                        name = "Spell";
+                        racetype = 7;
+                        cardtype = 1;
+                        break;
+
+                }
+
+                random = rand.Next(10, 101);
+                damage = random;
+
+                random = rand.Next(0, 3);
+                elementtype = random;
+
+                switch (random)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        name = "Fire" + name;
+                        break;
+                    case 2:
+                        name = "Water" + name;
+                        break;
+                }
+
+                db.addCard(name, damage, cardtype, elementtype, racetype);
+            }
+            
+        }
+
+
 
     }
 }
