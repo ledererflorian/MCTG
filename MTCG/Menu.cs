@@ -36,35 +36,18 @@ namespace MTCG
 
             GameLogic gamelogic = new GameLogic();
 
-            User user1 = new User("Flo");
+           
             User user2 = new User("AI");
             Stack stack1 = new Stack();
             Stack stack2 = new Stack();
             Deck deck1 = new Deck();
-            Deck deck2 = new Deck(); 
-            
+            Deck deck2 = new Deck();
 
-            user1._userstack = stack1;
+
+
             user2._userstack = stack2;
 
-            user1._userdeck = deck1;
             user2._userdeck = deck2;
-
-            user1._userstack.AddCard(card1);
-            user1._userstack.AddCard(card2);
-            user1._userstack.AddCard(card3);
-            user1._userstack.AddCard(card4);
-            user1._userstack.AddCard(card5);
-            user1._userstack.AddCard(card6);
-            user1._userstack.AddCard(card7);
-            user1._userstack.AddCard(card8);
-
-            
-            user1._userdeck.AddCard(card1);
-            user1._userdeck.AddCard(card2);
-            user1._userdeck.AddCard(card3);
-            user1._userdeck.AddCard(card4);
-            
 
             user2._userdeck.AddCard(card5);
             user2._userdeck.AddCard(card6);
@@ -73,7 +56,7 @@ namespace MTCG
             bool loggedin = false; 
             int select = 0;
             Console.WriteLine("Welcome to MTCG\n");
-            int loggedinID;
+            int loggedinID = 0;
 
             while (!loggedin)
             {
@@ -89,7 +72,6 @@ namespace MTCG
                         if((loggedinID = LoginUser()) != 0)
                         {
                             loggedin = true;
-                            user1._userid = loggedinID;
                         }  else
                         {
                             loggedinID = 0; 
@@ -118,6 +100,13 @@ namespace MTCG
                 }
             }
 
+            User user1 = new User(db.getUsernameByUserID(loggedinID));
+            user1._userid = loggedinID;
+            user1._coins = db.getCoinsByUserID(user1._userid);
+            user1._elo = db.getEloByUserID(user1._userid);
+            user1._userstack = stack1;
+            user1._userdeck = deck1; 
+
             while (true)
             {
                 Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Quit");
@@ -132,8 +121,6 @@ namespace MTCG
                         } else
                         {
                             Console.WriteLine("Player " + gamelogic.BattleLogic(user1, user2) + " won the match"); //Draw output adden
-                            Console.WriteLine(user1._userdeck._deck.Count);
-                            Console.WriteLine(user2._userdeck._deck.Count);
                         }
                         break;
                     case 2:

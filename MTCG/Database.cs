@@ -296,9 +296,50 @@ namespace MTCG
                     reader.Read();
                 }
                 int coins = Convert.ToInt32(reader["coins"]);
-                Console.WriteLine("COINS:" + coins);
                 disconnect();
                 return coins;
+            }
+        }
+
+        public void setCoins(int userid, int coins)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET coins = @c WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                cmd.Parameters.AddWithValue("c", coins);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public void setElo(int userid, int elo)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET elo = @e WHERE userid = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                cmd.Parameters.AddWithValue("e", elo);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public string getUsernameByUserID(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT name FROM users WHERE id = @i", connection))
+            {
+                cmd.Parameters.AddWithValue("i", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                string username = Convert.ToString(reader["name"]);
+                disconnect();
+                return username;
             }
         }
 
@@ -315,7 +356,6 @@ namespace MTCG
                     reader.Read();
                 }
                 int elo = Convert.ToInt32(reader["elo"]);
-                Console.WriteLine("ELO:" + elo);
                 disconnect();
                 return elo;
             }

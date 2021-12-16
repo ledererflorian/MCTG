@@ -64,7 +64,7 @@ namespace MTCG
 
             Console.Clear();
             Console.WriteLine($"Your coins: {_coins}");
-            Console.WriteLine("Do you want to pay 5 Coins to buy a package consisting of 5 cards? [y/n]"); //add coins check
+            Console.WriteLine("Do you want to pay 5 Coins to buy a pack consisting of 5 cards? [y/n]"); //add coins check
             char input = 'x';
             
             while(input != 'y' || input != 'n')
@@ -82,17 +82,24 @@ namespace MTCG
                     Console.WriteLine("Invalid input");
                 }
             }
-            _coins = _coins - 5;
-            Console.WriteLine("Congratulations! You have acquired new cards!: ");
-
-            for(int i = 0; i < 5; i++)
+            if(_coins > 4)
             {
-                cardid = db.getRandomCardID();
-                db.addCardToStack(_userid, cardid);
-                db.getCardByID(cardid).PrintCard(); 
-            }
+                _coins = _coins - 5;
+                db.setCoins(_userid, _coins);
+                Console.WriteLine("Congratulations! You have acquired new cards!: ");
 
-            Console.WriteLine($"New balance: {_coins} coins");
+                for (int i = 0; i < 5; i++)
+                {
+                    cardid = db.getRandomCardID();
+                    db.addCardToStack(_userid, cardid);
+                    db.getCardByID(cardid).PrintCard();
+                }
+
+                Console.WriteLine($"New balance: {_coins} coins");
+            } else
+            {
+                Console.WriteLine("You don't have enought coins to buy a pack!");
+            }
 
         }
 
