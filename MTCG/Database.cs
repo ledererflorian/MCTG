@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Npgsql; 
+using Npgsql;
 
 namespace MTCG
 {
@@ -90,9 +90,7 @@ namespace MTCG
                     int result = Convert.ToInt32(reader["id"]);
                     disconnect();
                     return result;
-                    
                 }
-
                 else
                 {
                     disconnect();
@@ -129,45 +127,200 @@ namespace MTCG
         }
 
 
-        public void getCard()
+        public Card getCardByID(int cardid)
         {
-            int id = 380; 
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM cards WHERE id = @i", connection))
+            {
+                cmd.Parameters.AddWithValue("i", cardid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();                    
+                }
+                Card card = new Card((string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
+                disconnect();
+                return card; 
+
+            }
+        }
+        /*
+        public Card getCard(int cardid)
+        {
+            int id = 381; //delete later
             connect();
             using (var cmd = new NpgsqlCommand("SELECT * FROM cards WHERE id = @i", connection))
             {
                 cmd.Parameters.AddWithValue("i", id);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-                //string name; 
 
                 if (reader.HasRows)
                 {
                     reader.Read();
-                    Console.WriteLine("UserID: " + reader["name"]);
+                    Card card = new Card((string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
+                    Console.WriteLine("CARD FROM DB:");
+                    card.PrintCard();
                     disconnect();
+
                 }
 
             }
         }
+        */
 
-
-        public void outputTest()
+        public List<Card> getStack(int userid)
         {
-            connect(); 
-            using (var cmd = new NpgsqlCommand("SELECT * FROM users", connection))
+
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM cards JOIN stack ON cards.id=stack.cardid WHERE userid = @i", connection))
             {
+                cmd.Parameters.AddWithValue("i", userid);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                List<Card> stack = new List<Card>();
+
+                if (reader.HasRows)
                 {
-                    for (int i = 0; i < reader.FieldCount; i++)
+                    
+                    while (reader.Read())
                     {
-                        Console.Write(reader[i] + "  ");
+                        Card card = new Card((int)reader["cardid"], (string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
+                        stack.Add(card);
                     }
-                    Console.WriteLine();
-                    Console.WriteLine("------------------------------------------------------------------------");
                 }
+                disconnect(); 
+                return stack; 
+            }
+        }
+
+        public void addCardToStack(int userid, int cardid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("INSERT INTO stack (userid, cardid) VALUES (@uid, @cid)", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                cmd.Parameters.AddWithValue("cid", cardid);
+                cmd.ExecuteNonQuery();
+            }
+            disconnect();
+        }
+
+        public void selectCard(int userid, int cardid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE stack SET selected = true WHERE userid = @uid AND cardid = @cid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                cmd.Parameters.AddWithValue("cid", cardid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
             }
             disconnect(); 
         }
+
+        public void deselectCards(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE stack SET selected = false WHERE userid = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public int getCardCount(int userid)
+        {
+            int ocards = 0;
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT COUNT(userid) AS ownedcards FROM stack WHERE userid = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                ocards = Convert.ToInt32(reader["ownedcards"]);
+                Console.WriteLine(reader["ownedcards"]);
+            }
+            disconnect();
+            return ocards;
+        }
+
+        public int getSelectedCardCount(int userid)
+        {
+            int selcards = 0;
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT COUNT(selected) AS selectedcards FROM stack WHERE userid = @uid AND selected = true", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                selcards = Convert.ToInt32(reader["selectedcards"]);
+            }
+            disconnect();
+            return selcards; 
+        }
+
+        public int getRandomCardID()
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM cards ORDER BY RANDOM()", connection))
+            {
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                int cardid = Convert.ToInt32(reader["id"]);
+                disconnect();
+                return cardid; 
+                /*
+                Card card = new Card((string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
+                Console.WriteLine("CARD FROM DB:");
+                card.PrintCard();
+                disconnect();
+                return card; 
+                */
+            }
+        }
+        
+        public int getCoinsByUserID(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT coins FROM users WHERE id = @i", connection))
+            {
+                cmd.Parameters.AddWithValue("i", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                int coins = Convert.ToInt32(reader["coins"]);
+                Console.WriteLine("COINS:" + coins);
+                disconnect();
+                return coins;
+            }
+        }
+
+        public int getEloByUserID(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT elo FROM users WHERE id = @i", connection))
+            {
+                cmd.Parameters.AddWithValue("i", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                int elo = Convert.ToInt32(reader["elo"]);
+                Console.WriteLine("ELO:" + elo);
+                disconnect();
+                return elo;
+            }
+        }
+
 
     }
 }

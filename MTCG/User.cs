@@ -8,6 +8,7 @@ namespace MTCG
 {
     class User
     {
+        public int _userid { get; set; }
         public string _name { get; set; }
         public int _coins {get; set; }
         public int _elo { get; set; }
@@ -16,47 +17,19 @@ namespace MTCG
         public Deck _userdeck; 
         public User(string name)
         {
+            Database db = new Database(); 
             _name = name;
-            _coins = 20;
-            _elo = 100; 
         }
-
-        public User(User prevUser)
-        {
-            /*
-            Console.WriteLine("EINS");
-            _name = prevUser._name;
-            _userstack = prevUser._userstack;
-            _userstack._stack = prevUser._userstack._stack;
-            
-            Console.WriteLine("ZWEI");
-            for (int i = 0; i < 4; i++)
-            {
-                Console.WriteLine("DREI");
-                Console.WriteLine(prevUser._userdeck._deck[i]._name);
-                Card card = new Card(prevUser._userdeck._deck[i]._name, prevUser._userdeck._deck[i]._damage, prevUser._userdeck._deck[i]._cardtype, prevUser._userdeck._deck[i]._elementtype, prevUser._userdeck._deck[i]._racetype);
-                Console.WriteLine("PRINTED CARD:");
-                card.PrintCard();
-                _userdeck._deck.AddCard(card);
-                    //_userdeck.AddCard(new Card(prevUser._userdeck._deck[i]._name, prevUser._userdeck._deck[i]._damage, prevUser._userdeck._deck[i]._cardtype, prevUser._userdeck._deck[i]._elementtype, prevUser._userdeck._deck[i]._racetype));
-                Console.WriteLine("VIER");
-            }
-            //new Card("Dragon", 10, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.dragon);
-
-
-            
-            Console.WriteLine("Neuer Constructor verwendet!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //_userstack.PrintStack();
-            */
-        }
-
 
         public void CreateDeck()
         {
+            Database db = new Database(); 
             int input = 0; 
             _userdeck._deck.Clear();
 
-            List<Card> tempstack = new List<Card>(_userstack._stack);
+            //List<Card> tempstack = new List<Card>(_userstack._stack);
+            db.deselectCards(_userid);
+            List<Card> tempstack = db.getStack(_userid); 
             
             while (_userdeck._deck.Count < 4)
             {
@@ -78,9 +51,49 @@ namespace MTCG
                 else
                 {
                     _userdeck.AddCard(tempstack[input - 1]);
+                    db.selectCard(_userid, tempstack[input - 1]._cardid);
                     tempstack.RemoveAt(input - 1);
                 }
             }
+        }
+
+        public void Shop()
+        {
+            Database db = new Database();
+            int cardid = 0; 
+
+            Console.Clear();
+            Console.WriteLine($"Your coins: {_coins}");
+            Console.WriteLine("Do you want to pay 5 Coins to buy a package consisting of 5 cards? [y/n]"); //add coins check
+            char input = 'x';
+            
+            while(input != 'y' || input != 'n')
+            {
+                input = Convert.ToChar(Console.ReadLine());
+
+                if (input == 'n')
+                {
+                    return;
+                } else if(input == 'y')
+                {
+                    break; 
+                } else
+                {
+                    Console.WriteLine("Invalid input");
+                }
+            }
+            _coins = _coins - 5;
+            Console.WriteLine("Congratulations! You have acquired new cards!: ");
+
+            for(int i = 0; i < 5; i++)
+            {
+                cardid = db.getRandomCardID();
+                db.addCardToStack(_userid, cardid);
+                db.getCardByID(cardid).PrintCard(); 
+            }
+
+            Console.WriteLine($"New balance: {_coins} coins");
+
         }
 
     }

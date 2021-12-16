@@ -89,7 +89,7 @@ namespace MTCG
                         if((loggedinID = LoginUser()) != 0)
                         {
                             loggedin = true;
-                            Console.WriteLine("Loggedin ID: " + loggedinID);
+                            user1._userid = loggedinID;
                         }  else
                         {
                             loggedinID = 0; 
@@ -99,7 +99,16 @@ namespace MTCG
                         return;
                     case 4:
                         //CreateCardsInDB(); 
-                        db.getCard(); 
+                        //db.getCardByID(); 
+                        //db.getStack(); 
+                        //db.selectCard(10, 383);
+                        //db.deselectCards(10); 
+                        //db.getSelectedCardCount(10); 
+                        //db.getCardCount(5);
+                        //db.getRandomCardID(); 
+                        //db.addCardToStack(5, 400);
+                        //db.getCoinsByUserID(10);
+                        //db.getEloByUserID(10);
                         break;
 
 
@@ -117,22 +126,32 @@ namespace MTCG
                 switch (select)
                 {
                     case 1:
-                        Console.WriteLine("Player " + gamelogic.BattleLogic(user1, user2) + " won the match"); //Draw output adden
-                        Console.WriteLine(user1._userdeck._deck.Count);
-                        Console.WriteLine(user2._userdeck._deck.Count);
-
+                        if(db.getSelectedCardCount(user1._userid) < 4)
+                        {
+                            Console.WriteLine("Create a deck before fighting!");
+                        } else
+                        {
+                            Console.WriteLine("Player " + gamelogic.BattleLogic(user1, user2) + " won the match"); //Draw output adden
+                            Console.WriteLine(user1._userdeck._deck.Count);
+                            Console.WriteLine(user2._userdeck._deck.Count);
+                        }
                         break;
                     case 2:
+                        if(db.getCardCount(user1._userid) < 4)
+                        {
+                            Console.WriteLine("You have to buy some cards before you can create a deck!");
+                        } else
+                        {
                         user1.CreateDeck();
                         Console.WriteLine("Deck erstellt");
                         user1._userdeck.PrintDeck();
-                        Console.WriteLine("----");
-                        user1._userstack.PrintStack();
+                        Console.WriteLine("----"); //remove
+                        user1._userstack.PrintStack(); //remove
+                        }
 
                         break;
                     case 3:
-                        //db.addUser();
-                        //db.outputTest(); 
+                        user1.Shop(); 
                         break;
                     case 4:
                         return; 
