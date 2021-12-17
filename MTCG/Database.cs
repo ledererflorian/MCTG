@@ -309,6 +309,31 @@ namespace MTCG
             return selcards; 
         }
 
+        public List<Card> getSelectedStack(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM cards JOIN stack ON cards.id=stack.cardid WHERE userid = @uid AND selected = true", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Card> cardlist = new List<Card>();
+
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        Card card = new Card((int)reader["cardid"], (string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
+                        cardlist.Add(card);
+                    }
+                    disconnect();
+                    return cardlist;
+                }
+                return cardlist; //evtl errorhandling in gamelogic/menu, je nach dem
+            }
+        }
+
+
         public int getRandomCardID()
         {
             connect();

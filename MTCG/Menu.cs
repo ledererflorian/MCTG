@@ -111,8 +111,8 @@ namespace MTCG
 
             while (true)
             {
-                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Cards\n5:Offer Card\n6:Withdraw Trade Offer\n7:Quit");
-                select = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4:Trade Center\n5:Quit");
+                select = InputHandler.getInstance().InputHandlerForInt(1, 5);
                 //Console.Clear(); 
                 switch (select)
                 {
@@ -143,19 +143,10 @@ namespace MTCG
                         user1.Shop(); 
                         break;
                     case 4:
-                        trading.Trade(user1);
+                        trading.TradingHub(user1);
                         break;
                     case 5:
-                        trading.OfferCard(user1);
-                        break;
-                    case 6:
-                        trading.WithdrawOffer(user1); 
-                        break; 
-                    case 7:
-                        return;
-                    case 8:
-                        trading.TradingHub(user1);
-                        break; 
+                        return; 
                     default:
                         Console.WriteLine("Invalid input");
                         continue;
