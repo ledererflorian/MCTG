@@ -111,7 +111,7 @@ namespace MTCG
 
             while (true)
             {
-                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Tradecenter\n5:Quit");
+                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Cards\n5:Offer Card\n6:Withdraw Trade Offer\n7:Quit");
                 select = Convert.ToInt32(Console.ReadLine());
                 //Console.Clear(); 
                 switch (select)
@@ -143,16 +143,15 @@ namespace MTCG
                         user1.Shop(); 
                         break;
                     case 4:
-                        if (db.getCardCount(user1._userid) < 4)
-                        {
-                            Console.WriteLine("You have to buy some cards before you can trade with other Players!");
-                        }
-                        else
-                        {
-                            trading.Trade(user1); 
-                        }
-                        break; 
+                        trading.Trade(user1);
+                        break;
                     case 5:
+                        trading.OfferCard(user1);
+                        break;
+                    case 6:
+
+                        break; 
+                    case 7:
                         return; 
                     default:
                         Console.WriteLine("Invalid input");

@@ -193,6 +193,30 @@ namespace MTCG
             }
         }
 
+        public List<Card> getUnselectedStack(int userid)
+        {
+
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM cards JOIN stack ON cards.id=stack.cardid WHERE userid = @i AND selected = false", connection))
+            {
+                cmd.Parameters.AddWithValue("i", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Card> stack = new List<Card>();
+
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        Card card = new Card((int)reader["cardid"], (string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
+                        stack.Add(card);
+                    }
+                }
+                disconnect();
+                return stack;
+            }
+        }
+
         public void addCardToStack(int userid, int cardid)
         {
             connect();
@@ -200,6 +224,20 @@ namespace MTCG
             {
                 cmd.Parameters.AddWithValue("uid", userid);
                 cmd.Parameters.AddWithValue("cid", cardid);
+                cmd.ExecuteNonQuery();
+            }
+            disconnect();
+        }
+
+        public void addTradingOffer(int ownerid, int cardid, int typerequirement, int damagerequirement)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("INSERT INTO trading (ownerid, cardid, typerequirement, damagerequirement) VALUES (@oid, @cid, @treq, @dmgreq)", connection))
+            {
+                cmd.Parameters.AddWithValue("oid", ownerid);
+                cmd.Parameters.AddWithValue("cid", cardid);
+                cmd.Parameters.AddWithValue("treq", typerequirement);
+                cmd.Parameters.AddWithValue("dmgreq", damagerequirement);
                 cmd.ExecuteNonQuery();
             }
             disconnect();
