@@ -16,7 +16,8 @@ namespace MTCG
             int rounds = 1;
 
 
-            List<Card> tempdeck1 = new List<Card>(user1._userdeck._deck); 
+            List<Card> tempdeck1 = new List<Card>(user1._userdeck._deck); // DB ZUGRIFF FIXEN
+            Console.WriteLine("LENGTH: " + tempdeck1.Count());
             List<Card> tempdeck2 = new List<Card>(user2._userdeck._deck); 
 
             
@@ -26,7 +27,6 @@ namespace MTCG
             while (true)
             {
                 
-                Console.WriteLine("Deckcount" + tempdeck1.Count + "   " + tempdeck2.Count);
                 int rnumber1 = rand.Next(0, tempdeck1.Count);
                 int rnumber2 = rand.Next(0, tempdeck2.Count);
 
@@ -62,7 +62,6 @@ namespace MTCG
                 
                 }
 
-                
                 if (tempdeck1.Count == 0) { return 2; }
                 if (tempdeck2.Count == 0) { return 1; }
                 if (rounds == 100) { return 0; }
@@ -71,7 +70,6 @@ namespace MTCG
                 Console.WriteLine(); 
             }
         }
-
 
         public int calcWinner(Card cardp1, Card cardp2)
         {

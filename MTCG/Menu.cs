@@ -149,10 +149,13 @@ namespace MTCG
                         trading.OfferCard(user1);
                         break;
                     case 6:
-
+                        trading.WithdrawOffer(user1); 
                         break; 
                     case 7:
-                        return; 
+                        return;
+                    case 8:
+                        trading.TradingHub(user1);
+                        break; 
                     default:
                         Console.WriteLine("Invalid input");
                         continue;

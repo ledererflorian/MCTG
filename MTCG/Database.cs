@@ -426,6 +426,33 @@ namespace MTCG
             disconnect();
         }
 
+        public List<Tradeoffer> getOwnTradingOffers(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM trading WHERE ownerid = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+
+                List<Tradeoffer> tradinglist = new List<Tradeoffer>();
+
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        Tradeoffer tradeoffer = new Tradeoffer((int)reader["id"], (int)reader["ownerid"], (int)reader["cardid"], (CardTypesEnum.CardTypes)reader["typerequirement"], (int)reader["damagerequirement"]);
+                        tradinglist.Add(tradeoffer);
+                    }
+                }
+                disconnect(); //CHECKEN OB ALLES GEHT NOCHM FOODEN xd
+                return tradinglist;
+
+
+            }
+        }
+
         public List<Card> getCardsByRequirement(int userid, int cardtype, int mindamage)
         {
             connect();

@@ -9,6 +9,34 @@ namespace MTCG
     class Trading
     {
 
+        public void TradingHub(User user1)
+        {
+
+            Console.WriteLine("Welcome to the Trade Center!");
+            Console.WriteLine();
+            Console.WriteLine("1: Trade Cards\n2:Offer Card\n3:Withdraw Trade Offer\n4:Leave Trade Center\n");
+            int select = InputHandler.getInstance().InputHandlerForInt(1, 4);
+
+            switch (select)
+            {
+
+                case 1:
+                    Console.WriteLine("one");
+                    break;
+                case 2:
+                    Console.WriteLine("two");
+                    break;
+                case 3:
+                    Console.WriteLine("three");
+                    break;
+                case 4:
+                    Console.WriteLine("four");
+                    break;
+            }
+
+        }
+
+        
 
 
         public void Trade(User user1)
@@ -143,8 +171,46 @@ namespace MTCG
         }
 
 
-        public void WithdrawOffer()
+        public void WithdrawOffer(User user1)
         {
+            Database db = new Database();
+            int input = 0;
+            
+
+            List<Tradeoffer> tradeoffers = db.getOwnTradingOffers(user1._userid);
+
+            if (tradeoffers.Count() == 0)
+            {
+                Console.WriteLine("You haven't submitted any cards yet!");
+                return;
+            }
+
+
+            Console.Clear();
+            Console.WriteLine("Select a card you want to withdraw by entering its associated ID! ");
+            Console.WriteLine(); 
+            for (int i = 0; i < tradeoffers.Count(); i++)
+            {
+                Console.WriteLine("---------------------------------------------------------------");
+                Console.Write($"{i + 1}: ");
+                Console.WriteLine("Offer by " + db.getUsernameByUserID(tradeoffers[i]._ownerid));
+                Card card = db.getCardByID(tradeoffers[i]._cardid);
+                card.PrintCard();
+                Console.WriteLine("Requirements for Trade: Cardtype: " + tradeoffers[i]._typerequirement + " | min. Damage: " + tradeoffers[i]._damagerequirement);
+            }
+
+            input = Convert.ToInt32(Console.ReadLine());
+
+            if (input > tradeoffers.Count())
+            {
+                Console.WriteLine("Invalid input");
+            }
+            else
+            {
+                db.deleteTradingOffer(tradeoffers[input - 1]._tradingid);
+                db.addCardToStack(user1._userid, tradeoffers[input - 1]._cardid);
+                Console.WriteLine("Your card has been removed from the market and returned to your stack!"); 
+            }
 
         }
 
