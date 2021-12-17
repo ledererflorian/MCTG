@@ -105,11 +105,13 @@ namespace MTCG
             user1._coins = db.getCoinsByUserID(user1._userid);
             user1._elo = db.getEloByUserID(user1._userid);
             user1._userstack = stack1;
-            user1._userdeck = deck1; 
+            user1._userdeck = deck1;
+
+            Trading trading = new Trading(); 
 
             while (true)
             {
-                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Quit");
+                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Tradecenter\n5:Quit");
                 select = Convert.ToInt32(Console.ReadLine());
                 //Console.Clear(); 
                 switch (select)
@@ -141,6 +143,16 @@ namespace MTCG
                         user1.Shop(); 
                         break;
                     case 4:
+                        if (db.getCardCount(user1._userid) < 4)
+                        {
+                            Console.WriteLine("You have to buy some cards before you can trade with other Players!");
+                        }
+                        else
+                        {
+                            trading.Trade(user1); 
+                        }
+                        break; 
+                    case 5:
                         return; 
                     default:
                         Console.WriteLine("Invalid input");

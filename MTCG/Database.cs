@@ -217,12 +217,24 @@ namespace MTCG
             disconnect(); 
         }
 
-        public void deselectCards(int userid)
+        public void deselectCards(int userid) 
         {
             connect();
             using (var cmd = new NpgsqlCommand("UPDATE stack SET selected = false WHERE userid = @uid", connection))
             {
                 cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public void deleteCardFromStack(int userid, int cardid) //fix duplicate deletion problem, i guess mit stackID
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("DELETE FROM stack WHERE userid = @uid AND cardid = @cid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                cmd.Parameters.AddWithValue("cid", cardid);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
             disconnect();
@@ -342,6 +354,68 @@ namespace MTCG
                 return username;
             }
         }
+
+        public List<Tradeoffer> getTradingOffers()
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM trading", connection))
+            {
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Tradeoffer> tradinglist = new List<Tradeoffer>();
+
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        Tradeoffer tradeoffer = new Tradeoffer((int)reader["id"], (int)reader["ownerid"], (int)reader["cardid"], (CardTypesEnum.CardTypes)reader["typerequirement"], (int)reader["damagerequirement"]);
+                        tradinglist.Add(tradeoffer);
+                    }
+                }
+                disconnect();
+                return tradinglist;
+            }
+        }
+
+        public void deleteTradingOffer(int tradingid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("DELETE FROM trading WHERE id = @tid", connection))
+            {
+                cmd.Parameters.AddWithValue("tid", tradingid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public List<Card> getCardsByRequirement(int userid, int cardtype, int mindamage)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM cards JOIN stack ON cards.id=stack.cardid WHERE userid = @uid AND damage >= @mindmg AND cardtype = @ct AND selected = false;", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                cmd.Parameters.AddWithValue("mindmg", mindamage);
+                cmd.Parameters.AddWithValue("ct", cardtype);
+
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Card> cardlist = new List<Card>();
+
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        Card card = new Card((int)reader["cardid"], (string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
+                        cardlist.Add(card);
+                    }
+                    disconnect();
+                    return cardlist;
+                }
+                return cardlist; //ERROR HANDLING IF NO CARDS
+
+            }
+        }
+
 
         public int getEloByUserID(int userid)
         {
