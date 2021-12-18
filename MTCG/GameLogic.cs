@@ -16,9 +16,6 @@ namespace MTCG
             int winner = 0;
             int rounds = 1;
 
-
-
-            //List<Card> tempdeck1 = new List<Card>(user1._userdeck._deck); // DB ZUGRIFF FIXEN
             List<Card> tempdeck1 = db.getSelectedStack(user1._userid);
             Console.WriteLine("LENGTH: " + tempdeck1.Count());
             List<Card> tempdeck2 = new List<Card>(user2._userdeck._deck); 

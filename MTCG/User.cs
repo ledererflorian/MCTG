@@ -19,6 +19,7 @@ namespace MTCG
         {
             Database db = new Database(); 
             _name = name;
+            
         }
 
         public void CreateDeck()

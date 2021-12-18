@@ -96,18 +96,28 @@ namespace MTCG
                     disconnect();
                     return 0;
                 }
+            }
+        }
 
-                /*
-                name = reader["name"].ToString();
+        public void getAllUsers()
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM users", connection))
+            {
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Card> stack = new List<Card>();
 
-                Console.WriteLine(reader["coins"].ToString());
-
-                if (name == "Simon")
+                if (reader.HasRows)
                 {
-                    Console.WriteLine("USER EXISTS");
-                    return 1; 
-                } 
-                */
+
+                    while (reader.Read())
+                    {
+                        Card card = new Card((int)reader["cardid"], (string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
+                        stack.Add(card);
+                    }
+                }
+                disconnect();
+                return stack;
             }
         }
 

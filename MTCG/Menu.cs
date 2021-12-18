@@ -61,7 +61,7 @@ namespace MTCG
             while (!loggedin)
             {
                 Console.WriteLine("1: Register\n2: Login\n3: Quit");
-                select = Convert.ToInt32(Console.ReadLine());
+                select = InputHandler.getInstance().InputHandlerForInt(1, 3);
                 //Console.Clear(); 
                 switch (select)
                 {
@@ -79,21 +79,6 @@ namespace MTCG
                         break;
                     case 3:
                         return;
-                    case 4:
-                        //CreateCardsInDB(); 
-                        //db.getCardByID(); 
-                        //db.getStack(); 
-                        //db.selectCard(10, 383);
-                        //db.deselectCards(10); 
-                        //db.getSelectedCardCount(10); 
-                        //db.getCardCount(5);
-                        //db.getRandomCardID(); 
-                        //db.addCardToStack(5, 400);
-                        //db.getCoinsByUserID(10);
-                        //db.getEloByUserID(10);
-                        break;
-
-
                     default:
                         Console.WriteLine("Invalid input");
                         continue;
