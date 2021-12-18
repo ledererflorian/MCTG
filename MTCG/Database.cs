@@ -99,26 +99,55 @@ namespace MTCG
             }
         }
 
-        public void getAllUsers()
+        public List<User> getAllUsersOrderedByElo() //anker
         {
             connect();
-            using (var cmd = new NpgsqlCommand("SELECT * FROM users", connection))
+            using (var cmd = new NpgsqlCommand("SELECT * FROM users ORDER BY elo DESC", connection))
             {
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-                List<Card> stack = new List<Card>();
-
+                List<User> userlist = new List<User>(); 
                 if (reader.HasRows)
                 {
 
                     while (reader.Read())
                     {
-                        Card card = new Card((int)reader["cardid"], (string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
-                        stack.Add(card);
+                        User user = new User((int)reader["id"],(string)reader["name"], (int)reader["coins"], (int)reader["elo"]); 
+                        userlist.Add(user);
                     }
                 }
                 disconnect();
-                return stack;
+                return userlist;
             }
+        }
+
+        public string getProfiletextByUserID(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT profiletext FROM users WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                string profiletext = Convert.ToString(reader["profiletext"]);
+                disconnect();
+                return profiletext;
+            }
+        }
+
+        public void editProfileText(int userid, string profiletext)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET profiletext = @pt WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                cmd.Parameters.AddWithValue("pt",profiletext);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
         }
 
         public void addCard(string name, int damage, int cardtype, int elementtype, int racetype)
@@ -425,6 +454,23 @@ namespace MTCG
                 string username = Convert.ToString(reader["name"]);
                 disconnect();
                 return username;
+            }
+        }
+
+        public User getUserByUserID(int userid) //onka
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM users WHERE id = @i", connection))
+            {
+                cmd.Parameters.AddWithValue("i", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                User user = new User((string)reader["name"], (int)reader["coins"], (int)reader["elo"]);
+                disconnect();
+                return user;
             }
         }
 

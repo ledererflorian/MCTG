@@ -15,11 +15,20 @@ namespace MTCG
 
         public Stack _userstack;
         public Deck _userdeck; 
-        public User(string name)
+        public User(string name, int coins, int elo)
         {
-            Database db = new Database(); 
+            //Database db = new Database(); 
             _name = name;
-            
+            _coins = coins;
+            _elo = elo;
+        }
+
+        public User(int userid, string name, int coins, int elo)
+        {
+            _userid = userid; 
+            _name = name;
+            _coins = coins;
+            _elo = elo;
         }
 
         public void CreateDeck()
@@ -56,6 +65,11 @@ namespace MTCG
                     tempstack.RemoveAt(input - 1);
                 }
             }
+        }
+
+        public void PrintUser()
+        {
+            Console.WriteLine("Name: " + _name + " - " + "Elo: " + _elo);
         }
 
         public void Shop()

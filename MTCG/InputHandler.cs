@@ -53,6 +53,24 @@ namespace MTCG
             return p;
         }
 
+        public string InputHandlerForString(int max)
+        {
+            string input = "";
+            bool abort = false; 
+            while(!abort)
+            {
+                input = Console.ReadLine();
+                if(input.Length > max)
+                {
+                    Console.WriteLine($"Please enter a shorter message! [0-{max}]");
+                } else
+                {
+                    abort = true; 
+                }
+            }
+            return input; 
+        }
+
 
     }
 }
