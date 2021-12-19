@@ -108,7 +108,22 @@ namespace MTCG
                             Console.WriteLine("Create a deck before fighting!");
                         } else
                         {
-                            Console.WriteLine("Player " + gamelogic.BattleLogic(user1, user2) + " won the match"); //Draw output adden
+                            user1._userdeck._deck = LoadCurrentDeck(user1._userid);
+                            int battlewinner = gamelogic.BattleLogic(user1, user2);
+                            Console.WriteLine("Player " + battlewinner + " won the match!"); //Draw output adden
+
+                            if(battlewinner == 1)
+                            {
+                                user1.UpdateWin();
+                                //implement loss update for user2
+                            } else if(battlewinner == 2)
+                            {
+                                user1.UpdateLoss(); 
+                                //implement win update for user2
+                            } else
+                            {
+
+                            }
                         }
                         break;
                     case 2:
@@ -210,6 +225,13 @@ namespace MTCG
                 Console.WriteLine("Login successful!");
                 return success;
             }
+        }
+
+        public List<Card> LoadCurrentDeck(int uid)
+        {
+            Database db = new Database();
+            List<Card> deck = db.getSelectedStack(uid);
+            return deck; 
         }
 
 

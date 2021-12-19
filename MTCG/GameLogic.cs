@@ -16,8 +16,8 @@ namespace MTCG
             int winner = 0;
             int rounds = 1;
 
-            List<Card> tempdeck1 = db.getSelectedStack(user1._userid);
-            Console.WriteLine("LENGTH: " + tempdeck1.Count());
+            List<Card> tempdeck1 = new List<Card>(user1._userdeck._deck);
+
             List<Card> tempdeck2 = new List<Card>(user2._userdeck._deck); 
 
             
@@ -35,8 +35,8 @@ namespace MTCG
                 cardp2 = tempdeck2[rnumber2];
 
                 Console.WriteLine($"Round {rounds}");
-                Console.WriteLine($"Left Cards P1: {tempdeck1.Count}");
-                Console.WriteLine($"Left Cards P2: {tempdeck2.Count}");
+                Console.WriteLine($"Cards left P1: {tempdeck1.Count}");
+                Console.WriteLine($"Cards left P2: {tempdeck2.Count}");
                 Console.WriteLine(); 
                 
                 Console.Write("Chosen Card P1: ");
@@ -63,19 +63,22 @@ namespace MTCG
                 }
 
                 if (tempdeck1.Count == 0) {
+                    /*
                     db.decreaseElo(user1._userid);
                     db.incrementLosses(user1._userid);
                     user1._elo = user1._elo - 5;
                     user1._losses++;
+                    */
                     return 2; 
                 }
                 if (tempdeck2.Count == 0) 
                 {
+                    /*
                     db.increaseElo(user1._userid);
                     db.incrementWins(user1._userid);
                     user1._elo = user1._elo + 3;
                     user1._wins++;
-
+                    */
                     return 1;
                 }
                 if (rounds == 100) { return 0; }

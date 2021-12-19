@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class InputHandler
+    public class InputHandler
     {
         static InputHandler instance;
         InputHandler()

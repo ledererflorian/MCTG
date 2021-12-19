@@ -85,6 +85,24 @@ namespace MTCG
             }
         }
 
+        public void UpdateWin()
+        {
+            Database db = new Database(); 
+            db.increaseElo(_userid);
+            db.incrementWins(_userid);
+            _elo = _elo + 3;
+            _wins++;
+        }
+
+        public void UpdateLoss()
+        {
+            Database db = new Database(); 
+            db.decreaseElo(_userid);
+            db.incrementLosses(_userid);
+            _elo = _elo - 5;
+            _losses++;
+        }
+
         public void PrintUser()
         {
             Console.WriteLine("Name: " + _name + " - " + "Elo: " + _elo);

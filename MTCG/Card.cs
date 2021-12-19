@@ -104,6 +104,11 @@ namespace MTCG
 
         public double IsEffective(Card enemycard)
         {
+            if(this._cardtype == CardTypesEnum.CardTypes.monster && enemycard._cardtype == CardTypesEnum.CardTypes.monster)
+            {
+                return 1; 
+            } 
+
             if((this._elementtype == ElementTypesEnum.ElementTypes.water && enemycard._elementtype == ElementTypesEnum.ElementTypes.fire) || (this._elementtype == ElementTypesEnum.ElementTypes.fire && enemycard._elementtype == ElementTypesEnum.ElementTypes.normal) || (this._elementtype == ElementTypesEnum.ElementTypes.normal && enemycard._elementtype == ElementTypesEnum.ElementTypes.water))
             {
                 return 2; 
