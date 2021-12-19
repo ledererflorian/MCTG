@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class RaceTypesEnum
+    public class RaceTypesEnum
     {
         public enum RaceTypes
         {

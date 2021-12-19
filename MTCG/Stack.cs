@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class Stack
+    public class Stack
     {
 
         public List<Card> _stack = new List<Card>(); 

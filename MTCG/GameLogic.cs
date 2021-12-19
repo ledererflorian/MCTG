@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class GameLogic
+    public class GameLogic
     {
 
         public int BattleLogic(User user1, User user2)

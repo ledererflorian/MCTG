@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class User
+    public class User
     {
         public int _userid { get; set; }
         public string _name { get; set; }

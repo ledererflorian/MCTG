@@ -41,7 +41,13 @@ namespace MTCG
             Console.WriteLine("Coins: " + user1._coins);
             Console.WriteLine("Elo: " + user1._elo);
             Console.WriteLine("Status: " + db.getProfiletextByUserID(user1._userid));
-            Console.WriteLine("Winrate:" + Math.Round(((float) user1._wins / (user1._wins + user1._losses)) *100, 2) + "%");
+            if(user1._wins == 0 && user1._losses == 0)
+            {
+                Console.WriteLine("Winrate: No games played yet");
+            } else
+            {
+                Console.WriteLine("Winrate:" + Math.Round(((float) user1._wins / (user1._wins + user1._losses)) *100, 2) + "%");
+            }
         }
 
         public void EditProfile(User user1)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class CardTypesEnum
+    public class CardTypesEnum
     {
         public enum CardTypes
         {
