@@ -57,7 +57,7 @@ namespace MTCG
                 Console.WriteLine("Offer by " + db.getUsernameByUserID(tradeoffers[i]._ownerid));
                 Card card = db.getCardByID(tradeoffers[i]._cardid);
                 card.PrintCard();
-                Console.WriteLine("Requirements for Trade: Cardtype: " + tradeoffers[i]._typerequirement + " | min. Damage: " + tradeoffers[i]._damagerequirement);
+                Console.WriteLine("Requirements for Trade: [Cardtype: " + tradeoffers[i]._typerequirement + "] [min. Damage: " + tradeoffers[i]._damagerequirement + "]");
             }
 
             Console.WriteLine();

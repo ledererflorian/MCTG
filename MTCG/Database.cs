@@ -111,7 +111,7 @@ namespace MTCG
 
                     while (reader.Read())
                     {
-                        User user = new User((int)reader["id"],(string)reader["name"], (int)reader["coins"], (int)reader["elo"]); 
+                        User user = new User((int)reader["id"],(string)reader["name"], (int)reader["coins"], (int)reader["elo"], (int)reader["wins"], (int)reader["losses"]); 
                         userlist.Add(user);
                     }
                 }
@@ -468,7 +468,7 @@ namespace MTCG
                 {
                     reader.Read();
                 }
-                User user = new User((string)reader["name"], (int)reader["coins"], (int)reader["elo"]);
+                User user = new User((int)reader["id"],(string)reader["name"], (int)reader["coins"], (int)reader["elo"], (int)reader["wins"], (int)reader["losses"]);
                 disconnect();
                 return user;
             }
@@ -580,6 +580,85 @@ namespace MTCG
                 return elo;
             }
         }
+
+        public int getWinsByUserID(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT wins FROM users WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                int wins = Convert.ToInt32(reader["wins"]);
+                disconnect();
+                return wins;
+            }
+        }
+
+        public int getLossesByUserID(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT losses FROM users WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                int losses = Convert.ToInt32(reader["losses"]);
+                disconnect();
+                return losses;
+            }
+        }
+
+        public void incrementWins(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET wins = wins + 1 WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+        public void incrementLosses(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET losses = losses + 1 WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+        public void increaseElo(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET elo = elo + 3 WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public void decreaseElo(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET elo = elo - 5 WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
 
 
     }

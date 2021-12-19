@@ -12,23 +12,41 @@ namespace MTCG
         public string _name { get; set; }
         public int _coins {get; set; }
         public int _elo { get; set; }
+        public int _wins { get; set; }
+        public int _losses { get; set; }
 
         public Stack _userstack;
-        public Deck _userdeck; 
-        public User(string name, int coins, int elo)
+        public Deck _userdeck;
+        /*
+        public User(string name, int coins, int elo, int wins, int losses)
         {
             //Database db = new Database(); 
             _name = name;
             _coins = coins;
             _elo = elo;
+            _wins = wins;
+            _losses = losses; 
+        }
+        */
+
+        public User(string name, int coins, int elo, int wins, int losses)
+        {
+            _name = name;
+            _coins = coins;
+            _elo = elo;
+            _wins = wins;
+            _losses = losses;
         }
 
-        public User(int userid, string name, int coins, int elo)
+
+        public User(int userid, string name, int coins, int elo, int wins, int losses)
         {
             _userid = userid; 
             _name = name;
             _coins = coins;
             _elo = elo;
+            _wins = wins;
+            _losses = losses;
         }
 
         public void CreateDeck()

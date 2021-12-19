@@ -38,7 +38,7 @@ namespace MTCG
             Scoreboard scoreboard = new Scoreboard();
             ProfilePage profilepage = new ProfilePage(); 
 
-            User user2 = new User("AI", 50, 10);
+            User user2 = new User("AI", 0, 0, 0, 0);
             Stack stack1 = new Stack();
             Stack stack2 = new Stack();
             Deck deck1 = new Deck();
@@ -87,9 +87,9 @@ namespace MTCG
             }
 
             User user1 = db.getUserByUserID(loggedinID);
-            user1._userid = loggedinID;
-            user1._coins = db.getCoinsByUserID(user1._userid);
-            user1._elo = db.getEloByUserID(user1._userid);
+            //user1._userid = loggedinID;
+            //user1._coins = db.getCoinsByUserID(user1._userid);
+            //user1._elo = db.getEloByUserID(user1._userid);
             user1._userstack = stack1;
             user1._userdeck = deck1;
 
@@ -97,7 +97,7 @@ namespace MTCG
 
             while (true)
             {
-                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7:Quit");
+                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7: Quit");
                 select = InputHandler.getInstance().InputHandlerForInt(1, 7);
                 //Console.Clear(); 
                 switch (select)
