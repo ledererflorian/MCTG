@@ -111,8 +111,11 @@ namespace MTCG
                             user1._userdeck._deck = LoadCurrentDeck(user1._userid);
                             int battlewinner = gamelogic.BattleLogic(user1, user2);
                             Console.WriteLine("Player " + battlewinner + " won the match!"); //Draw output adden
+                            Console.WriteLine("Press any key to continue");
+                            Console.ReadKey();
+                            Console.Clear();
 
-                            if(battlewinner == 1)
+                            if (battlewinner == 1)
                             {
                                 user1.UpdateWin();
                                 //implement loss update for user2

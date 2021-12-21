@@ -55,7 +55,7 @@ namespace MTCG
             Database db = new Database(); 
             string input = "";
             Console.WriteLine("Enter a new Status Message (max. 30 characters)");
-            input = InputHandler.getInstance().InputHandlerForString(30);
+            input = InputHandler.getInstance().InputHandlerForString(0, 30);
             db.editProfileText(user1._userid, input);
             Console.Clear();
             Console.WriteLine("Profile text successfully changed!");

@@ -70,18 +70,12 @@ namespace MTCG
                 Console.WriteLine();
                 Console.WriteLine($"Select the cards for your deck by entering their associated ID's. [{_userdeck._deck.Count}/4]");
 
-                input = Convert.ToInt32(Console.ReadLine());
+                input = InputHandler.getInstance().InputHandlerForInt(1, tempstack.Count());
 
-                if (input > tempstack.Count())
-                {
-                    Console.WriteLine("Invalid input");
-                }
-                else
-                {
-                    _userdeck.AddCard(tempstack[input - 1]);
-                    db.selectCard(_userid, tempstack[input - 1]._cardid);
-                    tempstack.RemoveAt(input - 1);
-                }
+                _userdeck.AddCard(tempstack[input - 1]);
+                db.selectCard(_userid, tempstack[input - 1]._cardid);
+                tempstack.RemoveAt(input - 1);
+                
             }
         }
 
@@ -116,16 +110,16 @@ namespace MTCG
             Console.Clear();
             Console.WriteLine($"Your coins: {_coins}");
             Console.WriteLine("Do you want to pay 5 Coins to buy a pack consisting of 5 cards? [y/n]"); //add coins check
-            char input = 'x';
+            string input = "";
             
-            while(input != 'y' || input != 'n')
+            while(input != "y" || input != "n")
             {
-                input = Convert.ToChar(Console.ReadLine());
+                input = InputHandler.getInstance().InputHandlerForString(1, 1); 
 
-                if (input == 'n')
+                if (input == "n")
                 {
                     return;
-                } else if(input == 'y')
+                } else if(input == "y")
                 {
                     break; 
                 } else

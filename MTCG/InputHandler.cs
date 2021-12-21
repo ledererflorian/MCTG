@@ -53,7 +53,7 @@ namespace MTCG
             return p;
         }
 
-        public string InputHandlerForString(int max)
+        public string InputHandlerForString(int min, int max)
         {
             string input = "";
             bool abort = false; 
@@ -62,7 +62,7 @@ namespace MTCG
                 input = Console.ReadLine();
                 if(input.Length > max)
                 {
-                    Console.WriteLine($"Please enter a shorter message! [0-{max}]");
+                    Console.WriteLine($"Please enter a shorter message! [{min}-{max}]");
                 } else
                 {
                     abort = true; 
