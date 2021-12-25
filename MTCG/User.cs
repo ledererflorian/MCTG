@@ -99,7 +99,16 @@ namespace MTCG
 
         public void PrintUser()
         {
-            Console.WriteLine("Name: " + _name + " - " + "Elo: " + _elo);
+
+
+            if (_wins == 0 && _losses == 0)
+            {
+                Console.WriteLine("Name: " + _name + " - Elo: " + _elo + " - Winrate: No games played yet" );
+            }
+            else
+            {
+                Console.WriteLine("Name: " + _name + " - Elo: " + _elo + " - Winrate: " + Math.Round(((float) _wins / (_wins + _losses)) * 100, 2) + "%");
+            }
         }
 
         public void Shop()

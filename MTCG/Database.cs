@@ -387,16 +387,27 @@ namespace MTCG
                 int cardid = Convert.ToInt32(reader["id"]);
                 disconnect();
                 return cardid; 
-                /*
-                Card card = new Card((string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
-                Console.WriteLine("CARD FROM DB:");
-                card.PrintCard();
-                disconnect();
-                return card; 
-                */
             }
         }
-        
+
+        public int getOtherRandomUserID(int uid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM users WHERE id != @uid ORDER BY RANDOM()", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", uid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                int userid = Convert.ToInt32(reader["id"]);
+                disconnect();
+                return userid;
+            }
+        }
+
         public int getCoinsByUserID(int userid)
         {
             connect();

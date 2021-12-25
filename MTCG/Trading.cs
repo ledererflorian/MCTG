@@ -33,9 +33,6 @@ namespace MTCG
             }
         }
 
-        
-
-
         public void Trade(User user1)
         {
             Database db = new Database();
@@ -80,14 +77,14 @@ namespace MTCG
                 Console.Write($"{i + 1}: ");
                 filteredstack[i].PrintCard();
             }
-
+            Console.WriteLine("COUNT:" + filteredstack.Count());
             input2 = InputHandler.getInstance().InputHandlerForInt(1, filteredstack.Count());
 
             //db.deleteCardFromStack(tradeoffers[input - 1]._ownerid, tradeoffers[input - 1]._cardid);
-            db.deleteCardFromStack(user1._userid, filteredstack[input - 1]._cardid); //user looses old card
+            db.deleteCardFromStack(user1._userid, filteredstack[input2 - 1]._cardid); //user looses old card
 
             db.addCardToStack(user1._userid, tradeoffers[input - 1]._cardid); //user gets new card
-            db.addCardToStack(tradeoffers[input - 1]._ownerid, filteredstack[input - 1]._cardid);//provider gets new card
+            db.addCardToStack(tradeoffers[input - 1]._ownerid, filteredstack[input2 - 1]._cardid);//provider gets new card
 
             db.deleteTradingOffer(tradeoffers[input - 1]._tradingid); //provider looses old card
 

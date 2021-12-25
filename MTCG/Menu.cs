@@ -38,7 +38,7 @@ namespace MTCG
             Scoreboard scoreboard = new Scoreboard();
             ProfilePage profilepage = new ProfilePage(); 
 
-            User user2 = new User("AI", 0, 0, 0, 0);
+            User user2 = new User(0, "AI", 0, 0, 0, 0);
             Stack stack1 = new Stack();
             Stack stack2 = new Stack();
             Deck deck1 = new Deck();
@@ -49,11 +49,12 @@ namespace MTCG
             user2._userstack = stack2;
 
             user2._userdeck = deck2;
-
+            /*
             user2._userdeck.AddCard(card5);
             user2._userdeck.AddCard(card6);
             user2._userdeck.AddCard(card7);
             user2._userdeck.AddCard(card8);
+            */
             bool loggedin = false; 
             int select = 0;
             Console.WriteLine("Welcome to MTCG\n");
@@ -93,11 +94,12 @@ namespace MTCG
             user1._userstack = stack1;
             user1._userdeck = deck1;
 
-            Trading trading = new Trading(); 
+            Trading trading = new Trading();
+            Merge merge = new Merge(); 
 
             while (true)
             {
-                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7: Quit");
+                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7: Merge cards\n8: Quit");
                 select = InputHandler.getInstance().InputHandlerForInt(1, 7);
                 //Console.Clear(); 
                 switch (select)
@@ -109,24 +111,31 @@ namespace MTCG
                         } else
                         {
                             user1._userdeck._deck = LoadCurrentDeck(user1._userid);
+                            Console.WriteLine("Looking for opponent...");
+                          
+                            user2._userdeck._deck = LoadOpponentDeck(user1._userid, user2);
+
+                            Console.WriteLine("You are playing against " + db.getUsernameByUserID(user2._userid) + ".\nPress any key to continue");
+                            Console.ReadKey();
+
                             int battlewinner = gamelogic.BattleLogic(user1, user2);
                             Console.WriteLine("Player " + battlewinner + " won the match!"); //Draw output adden
-                            Console.WriteLine("Press any key to continue");
-                            Console.ReadKey();
-                            Console.Clear();
 
                             if (battlewinner == 1)
                             {
                                 user1.UpdateWin();
-                                //implement loss update for user2
+                                user2.UpdateLoss();
                             } else if(battlewinner == 2)
                             {
-                                user1.UpdateLoss(); 
-                                //implement win update for user2
+                                user1.UpdateLoss();
+                                user2.UpdateWin(); 
                             } else
                             {
 
                             }
+                            Console.WriteLine("Press any key to continue");
+                            Console.ReadKey();
+                            Console.Clear();
                         }
                         break;
                     case 2:
@@ -154,8 +163,11 @@ namespace MTCG
                         break;
                     case 6:
                         profilepage.ProfileHub(user1);
-                        break; 
+                        break;
                     case 7:
+                        merge.MergeCards(user1);
+                        break; 
+                    case 8:
                         return; 
                     default:
                         Console.WriteLine("Invalid input");
@@ -235,6 +247,22 @@ namespace MTCG
             Database db = new Database();
             List<Card> deck = db.getSelectedStack(uid);
             return deck; 
+        }
+
+        public List<Card> LoadOpponentDeck(int uid, User user2)
+        {
+            Database db = new Database();
+            List<Card> opponentdeck = new List<Card>();
+            int opponentid = 0; 
+
+            while (opponentdeck.Count() == 0)
+            {
+                opponentid = db.getOtherRandomUserID(uid);
+                opponentdeck = db.getSelectedStack(opponentid);
+            }
+            user2._userid = opponentid; 
+            return opponentdeck; 
+
         }
 
 
