@@ -13,20 +13,25 @@ namespace MTCG
         {
             Console.Clear();
             Console.WriteLine("Welcome to the Shop!");
-            Console.WriteLine();
-            Console.WriteLine("1: Buy Cards\n2: View Transaction History\n3: Leave Shop\n");
-            int select = InputHandler.getInstance().InputHandlerForInt(1, 3);
 
-            switch (select)
+            while (true)
             {
-                case 1:
-                    BuyCards(user1);
-                    break;
-                case 2:
-                    ListTransactions(user1);
-                    break;
-                case 3:
-                    return;
+
+                Console.WriteLine();
+                Console.WriteLine("1: Buy Cards\n2: View Transaction History\n3: Leave Shop\n");
+                int select = InputHandler.getInstance().InputHandlerForInt(1, 3);
+
+                switch (select)
+                {
+                    case 1:
+                        BuyCards(user1);
+                        break;
+                    case 2:
+                        ListTransactions(user1);
+                        break;
+                    case 3:
+                        return;
+                }
             }
         }
 

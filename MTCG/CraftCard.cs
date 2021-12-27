@@ -28,6 +28,7 @@ namespace MTCG
                         CraftNewCard(user1);
                         break;
                     case 3:
+                        Console.Clear(); 
                         return;
                 }
             }

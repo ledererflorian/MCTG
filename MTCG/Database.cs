@@ -487,7 +487,25 @@ namespace MTCG
             }
         }
 
-        public User getUserByUserID(int userid) //onka
+        public int getUserIDByUsername(string username)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT id FROM users WHERE name = @un", connection))
+            {
+                cmd.Parameters.AddWithValue("un", username);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                int userid = -1; 
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    userid = Convert.ToInt32(reader["id"]);
+                }
+                disconnect();
+                return userid;
+            }
+        }
+
+        public User getUserByUserID(int userid)
         {
             connect();
             using (var cmd = new NpgsqlCommand("SELECT * FROM users WHERE id = @i", connection))
@@ -810,7 +828,90 @@ namespace MTCG
             }
         }
 
+        public void sendFriendRequest(int userid, int otherid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("INSERT INTO friends (thisuserid, otheruserid) VALUES (@uid, @oid)", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                cmd.Parameters.AddWithValue("oid", otherid);
+                cmd.ExecuteNonQuery();
+            }
+            disconnect();
+        }
 
+        public List<Friendrequest> getFriendRequests(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM friends WHERE otheruserid = @uid AND accepted = FALSE", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+
+                List<Friendrequest> requestlist = new List<Friendrequest>();
+
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        Friendrequest friendrequest = new Friendrequest((int)reader["friendsid"], (int)reader["thisuserid"], (int)reader["otheruserid"]);
+                        requestlist.Add(friendrequest);
+                    }
+                }
+                disconnect();
+                return requestlist;
+            }
+        }
+
+        public void acceptFriendRequest(int friendsid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE friends SET accepted = TRUE WHERE friendsid = @fid", connection))
+            {
+                cmd.Parameters.AddWithValue("fid", friendsid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public void acceptFriendRequestMirror(int thisuserid, int otheruserid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("INSERT INTO friends (thisuserid, otheruserid, accepted) VALUES (@uid, @oid, TRUE)", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", thisuserid);
+                cmd.Parameters.AddWithValue("oid", otheruserid);
+                cmd.ExecuteNonQuery();
+            }
+            disconnect();
+        }
+
+        public List<Friendrequest> getFriendsbyUserID(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM friends WHERE thisuserid = @uid;", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Friendrequest> friends = new List<Friendrequest>();
+
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        Friendrequest friend = new Friendrequest((int)reader["friendsid"], (int)reader["thisuserid"], (int)reader["otheruserid"]);
+                        friends.Add(friend);
+                    }
+                    disconnect();
+                    return friends;
+                }
+                return friends;
+
+            }
+        }
 
     }
 }

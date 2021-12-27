@@ -29,6 +29,7 @@ namespace MTCG
                     WithdrawOffer(user1);
                     break;
                 case 4:
+                    Console.Clear();
                     return; 
             }
         }

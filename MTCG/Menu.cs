@@ -96,12 +96,13 @@ namespace MTCG
 
             Shop shop = new Shop();
             Trading trading = new Trading();
-            CraftCard craftcard = new CraftCard(); 
+            CraftCard craftcard = new CraftCard();
+            Friends friends = new Friends(); 
 
             while (true)
             {
-                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7: Craft cards\n8: Quit");
-                select = InputHandler.getInstance().InputHandlerForInt(1, 7);
+                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7: Craft cards\n8: Friends\n9: Quit");
+                select = InputHandler.getInstance().InputHandlerForInt(1, 9);
                 //Console.Clear(); 
                 switch (select)
                 {
@@ -168,8 +169,11 @@ namespace MTCG
                         break;
                     case 7:
                         craftcard.CraftingHub(user1); 
-                        break; 
+                        break;
                     case 8:
+                        friends.FriendsHub(user1); 
+                        break; 
+                    case 9:
                         return; 
                     default:
                         Console.WriteLine("Invalid input");

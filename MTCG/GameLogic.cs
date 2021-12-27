@@ -24,6 +24,8 @@ namespace MTCG
             Card cardp1;
             Card cardp2;
 
+            Console.Clear(); 
+
             while (true)
             {
                 
