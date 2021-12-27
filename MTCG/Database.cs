@@ -689,6 +689,36 @@ namespace MTCG
             disconnect();
         }
 
+        public void updateTransactionHistory(int userid, string transaction)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET thistory = CONCAT(thistory, @t) WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                cmd.Parameters.AddWithValue("t", transaction);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public string getTransactionHistory(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT thistory FROM users WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                string thistory = Convert.ToString(reader["thistory"]);
+                disconnect();
+                return thistory;
+            }
+        }
+
         public void addNormalFragments(int userid)
         {
             connect();

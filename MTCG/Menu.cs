@@ -94,6 +94,7 @@ namespace MTCG
             user1._userstack = stack1;
             user1._userdeck = deck1;
 
+            Shop shop = new Shop();
             Trading trading = new Trading();
             CraftCard craftcard = new CraftCard(); 
 
@@ -153,14 +154,15 @@ namespace MTCG
 
                         break;
                     case 3:
-                        user1.Shop(); 
+                        //user1.Shop();
+                        shop.ShopHub(user1);
                         break;
                     case 4:
                         trading.TradingHub(user1);
                         break;
                     case 5:
                         scoreboard.PrintScoreboard();
-                        break;
+                        break; 
                     case 6:
                         profilepage.ProfileHub(user1);
                         break;
