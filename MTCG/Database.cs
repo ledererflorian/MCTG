@@ -390,6 +390,25 @@ namespace MTCG
             }
         }
 
+        public int getRandomCardIDWithSpecificElementAndDmgGreaterX(int elementtype, int damage)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM cards WHERE elementtype = @e AND damage > @d ORDER BY RANDOM()", connection))
+            {
+                cmd.Parameters.AddWithValue("e", elementtype);
+                cmd.Parameters.AddWithValue("d", damage);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                int cardid = Convert.ToInt32(reader["id"]);
+                disconnect();
+                return cardid;
+            }
+        }
+
         public int getOtherRandomUserID(int uid)
         {
             connect();
@@ -668,6 +687,97 @@ namespace MTCG
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
             disconnect();
+        }
+
+        public void addNormalFragments(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET normalfragment = normalfragment + 1 WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public void addFireFragments(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET firefragment = firefragment + 1 WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public void addWaterFragments(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET waterfragment = waterfragment + 1 WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public void removeNormalFragments(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET normalfragment = normalfragment - 2 WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public void removeFireFragments(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET firefragment = firefragment - 2 WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public void removeWaterFragments(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET waterfragment = waterfragment - 2 WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public List<int> getElementFragmentsByUserId(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT normalfragment, firefragment, waterfragment FROM users WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<int> fragmentcount = new List<int>();
+
+                if (reader.HasRows)
+                {
+
+                    while (reader.Read())
+                    {
+                        fragmentcount.Add((int) reader["normalfragment"]);
+                        fragmentcount.Add((int) reader["firefragment"]);
+                        fragmentcount.Add((int) reader["waterfragment"]);
+                    }
+                    disconnect();
+                    return fragmentcount;
+                }
+                return fragmentcount;
+            }
         }
 
 

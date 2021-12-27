@@ -95,11 +95,11 @@ namespace MTCG
             user1._userdeck = deck1;
 
             Trading trading = new Trading();
-            Merge merge = new Merge(); 
+            CraftCard craftcard = new CraftCard(); 
 
             while (true)
             {
-                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7: Merge cards\n8: Quit");
+                Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7: Craft cards\n8: Quit");
                 select = InputHandler.getInstance().InputHandlerForInt(1, 7);
                 //Console.Clear(); 
                 switch (select)
@@ -165,7 +165,7 @@ namespace MTCG
                         profilepage.ProfileHub(user1);
                         break;
                     case 7:
-                        merge.MergeCards(user1);
+                        craftcard.CraftingHub(user1); 
                         break; 
                     case 8:
                         return; 

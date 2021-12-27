@@ -77,7 +77,6 @@ namespace MTCG
                 Console.Write($"{i + 1}: ");
                 filteredstack[i].PrintCard();
             }
-            Console.WriteLine("COUNT:" + filteredstack.Count());
             input2 = InputHandler.getInstance().InputHandlerForInt(1, filteredstack.Count());
 
             //db.deleteCardFromStack(tradeoffers[input - 1]._ownerid, tradeoffers[input - 1]._cardid);
