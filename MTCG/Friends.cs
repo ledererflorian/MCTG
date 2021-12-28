@@ -102,6 +102,7 @@ namespace MTCG
             }
             else
             {
+                
                 Stack stack2 = new Stack(); 
                 Deck deck2 = new Deck();
 
@@ -116,6 +117,7 @@ namespace MTCG
 
                 int battlewinner = gamelogic.BattleLogic(user1, user2);
                 Console.WriteLine("\nPlayer " + battlewinner + " won the match!");
+                
             }
         }
 
