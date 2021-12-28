@@ -65,22 +65,10 @@ namespace MTCG
                 }
 
                 if (tempdeck1.Count == 0) {
-                    /*
-                    db.decreaseElo(user1._userid);
-                    db.incrementLosses(user1._userid);
-                    user1._elo = user1._elo - 5;
-                    user1._losses++;
-                    */
                     return 2; 
                 }
                 if (tempdeck2.Count == 0) 
                 {
-                    /*
-                    db.increaseElo(user1._userid);
-                    db.incrementWins(user1._userid);
-                    user1._elo = user1._elo + 3;
-                    user1._wins++;
-                    */
                     return 1;
                 }
                 if (rounds == 100) { return 0; }

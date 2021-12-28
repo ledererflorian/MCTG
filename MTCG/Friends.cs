@@ -8,7 +8,7 @@ namespace MTCG
 {
     class Friends
     {
-        public void FriendsHub(User user1)
+        public void FriendsHub(User user1, User user2)
         {
             Console.Clear();
             Console.WriteLine("Welcome to the Friends Menu!");
@@ -22,7 +22,7 @@ namespace MTCG
                 switch (select)
                 {
                     case 1:
-                        ListFriends(user1);
+                        ListFriends(user1, user2);
                         break;
                     case 2:
                         AddFriend(user1);
@@ -37,7 +37,7 @@ namespace MTCG
             }
         }
 
-        public void ListFriends(User user1)
+        public void ListFriends(User user1, User user2)
         {
             Database db = new Database();
             List<Friendrequest> friendlist = db.getFriendsbyUserID(user1._userid);
@@ -57,9 +57,75 @@ namespace MTCG
                 Console.WriteLine(db.getUsernameByUserID(friendlist[i]._otheruserid));
             }
 
-            Console.WriteLine("Enter a friend you want to interact with by entering the associated ID!");
+            Console.WriteLine("\nEnter a friend you want to interact with by entering the associated ID!");
+
+            int input = InputHandler.getInstance().InputHandlerForInt(1, friendlist.Count());
+            int selectedfriend = friendlist[input - 1]._otheruserid;
+            string friendname = db.getUsernameByUserID(selectedfriend);
+            Console.WriteLine($"1: Battle {friendname}\n2: View stats of {friendname}\n3: Delete {friendname} from friendlist\n4: Return to friends menu");
+            user2 = db.getUserByUserID(selectedfriend);
+            Console.WriteLine(user2._userid);
+
+            int input2 = InputHandler.getInstance().InputHandlerForInt(1, 4);
+
+
+            switch (input2)
+            {
+                case 1:
+                    FriendBattle(user1, user2);
+                    break;
+                case 2:
+                    user2.PrintUser(); 
+                    break;
+                case 3:
+                    db.deleteFriend(user1._userid, selectedfriend);
+                    Console.WriteLine($"You have deleted {selectedfriend} from your friendlist!\n Press any key to continue.");
+                    Console.ReadKey(); 
+                    break;
+                case 4:
+                    return; 
+            }
         }
-        
+
+        public void FriendBattle(User user1, User user2)
+        {
+            GameLogic gamelogic = new GameLogic(); 
+            Database db = new Database();
+            if (db.getSelectedCardCount(user1._userid) < 4)
+            {
+                Console.WriteLine("Create a deck before fighting!");
+                return;
+            }
+            else if (db.getSelectedCardCount(user2._userid) < 4)
+            {
+                Console.WriteLine("Your friend doesn't have created a deck yet!");
+            }
+            else
+            {
+                Stack stack2 = new Stack(); 
+                Deck deck2 = new Deck();
+
+                user2._userstack = stack2; //fix later
+                user2._userdeck = deck2; //fix later
+
+                user1._userdeck._deck = LoadCurrentDeck(user1._userid);
+                user2._userdeck._deck = LoadCurrentDeck(user2._userid);
+
+                Console.WriteLine("This battle won't affect your elo or winrate!\nPress any key to begin the battle!");
+                Console.ReadKey();
+
+                int battlewinner = gamelogic.BattleLogic(user1, user2);
+                Console.WriteLine("\nPlayer " + battlewinner + " won the match!");
+            }
+        }
+
+        public List<Card> LoadCurrentDeck(int uid)
+        {
+            Database db = new Database();
+            List<Card> deck = db.getSelectedStack(uid);
+            return deck;
+        }
+
 
         public void AddFriend(User user1)
         {
@@ -79,12 +145,20 @@ namespace MTCG
 
             if(otherid == -1)
             {
+
                 Console.WriteLine("This username does not exist!");
                 Console.WriteLine("Press any key to return to the menu");
+                Console.ReadKey();
                 Console.Clear(); 
                 return; 
             }
 
+            if (db.friendRequestExists(user1._userid, otherid) > 0)
+            {
+                Console.WriteLine($"\nA friendrequest to {db.getUsernameByUserID(otherid)} has already been sent!\nPress any key to return to the menu!");
+                Console.ReadKey();
+                return; 
+            }
             db.sendFriendRequest(user1._userid, otherid);
 
             Console.WriteLine();
@@ -119,10 +193,14 @@ namespace MTCG
 
             int input2 = InputHandler.getInstance().InputHandlerForInt(1, 2);
 
-            if(input2 == 1)
+            if (input2 == 1)
             {
                 db.acceptFriendRequest(friendrequests[input - 1]._friendid);
                 db.acceptFriendRequestMirror(user1._userid, friendrequests[input - 1]._thisuserid);
+            }
+            else {
+                Console.WriteLine(friendrequests[input - 1]._friendid + " " + user1._userid); 
+                db.declineFriendRequest(friendrequests[input - 1]._friendid);
             }
 
         }

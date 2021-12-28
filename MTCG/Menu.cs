@@ -121,7 +121,7 @@ namespace MTCG
                             Console.ReadKey();
 
                             int battlewinner = gamelogic.BattleLogic(user1, user2);
-                            Console.WriteLine("Player " + battlewinner + " won the match!"); //Draw output adden
+                            Console.WriteLine("\nPlayer " + battlewinner + " won the match!"); //Draw output adden
 
                             if (battlewinner == 1)
                             {
@@ -171,7 +171,7 @@ namespace MTCG
                         craftcard.CraftingHub(user1); 
                         break;
                     case 8:
-                        friends.FriendsHub(user1); 
+                        friends.FriendsHub(user1, user2); 
                         break; 
                     case 9:
                         return; 

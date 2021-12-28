@@ -865,6 +865,36 @@ namespace MTCG
             }
         }
 
+        public int friendRequestExists(int thisuserid, int otheruserid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT COUNT(friendsid) AS frq FROM friends WHERE thisuserid = @tuid AND otheruserid = @ouid", connection))
+            {
+                cmd.Parameters.AddWithValue("tuid", thisuserid);
+                cmd.Parameters.AddWithValue("ouid", otheruserid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                int friendrequestexists = Convert.ToInt32(reader["frq"]);
+                disconnect();
+                return friendrequestexists;
+            }
+        }
+
+        public void declineFriendRequest(int friendsid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("DELETE FROM friends WHERE friendsid = @fid", connection))
+            {
+                cmd.Parameters.AddWithValue("fid", friendsid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
         public void acceptFriendRequest(int friendsid)
         {
             connect();
@@ -911,6 +941,18 @@ namespace MTCG
                 return friends;
 
             }
+        }
+
+        public void deleteFriend(int thisuserid, int otheruserid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("DELETE FROM friends WHERE (thisuserid = @tuid AND otheruserid = @ouid) OR (thisuserid = @ouid AND otheruserid = @tuid) ", connection))
+            {
+                cmd.Parameters.AddWithValue("tuid", thisuserid);
+                cmd.Parameters.AddWithValue("ouid", otheruserid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
         }
 
     }
