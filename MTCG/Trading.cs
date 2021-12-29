@@ -55,36 +55,59 @@ namespace MTCG
                 Console.WriteLine("Offer by " + db.getUsernameByUserID(tradeoffers[i]._ownerid));
                 Card card = db.getCardByID(tradeoffers[i]._cardid);
                 card.PrintCard();
-                Console.WriteLine("Requirements for Trade: [Cardtype: " + tradeoffers[i]._typerequirement + "] [min. Damage: " + tradeoffers[i]._damagerequirement + "]");
+                if((int)tradeoffers[i]._typerequirement != 10)
+                {
+                    Console.WriteLine("Requirements for Trade: [Cardtype: " + tradeoffers[i]._typerequirement + "] [min. Damage: " + tradeoffers[i]._damagerequirement + "]");
+                } else
+                {
+                    Console.WriteLine("Requirements for Trade: [Coins:" + tradeoffers[i]._damagerequirement + "]");
+                }
             }
 
             Console.WriteLine();
             Console.WriteLine("Select the card you want to acquire by entering its associated ID.");
 
             input = InputHandler.getInstance().InputHandlerForInt(1, tradeoffers.Count());
- 
-            List<Card> filteredstack = db.getCardsByRequirement(user1._userid, (int) tradeoffers[input - 1]._typerequirement, tradeoffers[input -1]._damagerequirement);
-                
-            if(filteredstack.Count() == 0)
+            
+            if((int)tradeoffers[input - 1]._typerequirement != 10)
             {
-                Console.WriteLine("You don't have any cards, that meet the requirement!");
-                return; 
-            }
-                
-            Console.WriteLine($"Select the card you want to give away by entering its associated ID:");
+                List<Card> filteredstack = db.getCardsByRequirement(user1._userid, (int)tradeoffers[input - 1]._typerequirement, tradeoffers[input - 1]._damagerequirement);
 
-            for (int i = 0; i < filteredstack.Count(); i++)
+                if (filteredstack.Count() == 0)
+                {
+                    Console.WriteLine("You don't have any cards, that meet the requirement!");
+                    return;
+                }
+
+                Console.WriteLine($"Select the card you want to give away by entering its associated ID:");
+
+                for (int i = 0; i < filteredstack.Count(); i++)
+                {
+                    Console.Write($"{i + 1}: ");
+                    filteredstack[i].PrintCard();
+                }
+                input2 = InputHandler.getInstance().InputHandlerForInt(1, filteredstack.Count());
+
+                //db.deleteCardFromStack(tradeoffers[input - 1]._ownerid, tradeoffers[input - 1]._cardid);
+                db.deleteCardFromStack(user1._userid, filteredstack[input2 - 1]._cardid); //user looses old card
+
+                db.addCardToStack(user1._userid, tradeoffers[input - 1]._cardid); //user gets new card
+                db.addCardToStack(tradeoffers[input - 1]._ownerid, filteredstack[input2 - 1]._cardid);//provider gets new card
+
+            } else
             {
-                Console.Write($"{i + 1}: ");
-                filteredstack[i].PrintCard();
+                if(db.getCoinsByUserID(user1._userid) < (int) tradeoffers[input - 1]._damagerequirement)
+                {
+                    Console.WriteLine("You don't have enough coins to purchase the card!");
+                    return;
+                }
+                db.addCardToStack(user1._userid, tradeoffers[input - 1]._cardid); //user gets new card
+                db.deleteTradingOffer(tradeoffers[input - 1]._tradingid); //provider looses old card
+
+                db.setCoins(user1._userid, db.getCoinsByUserID(user1._userid) - tradeoffers[input - 1 ]._damagerequirement);
+                db.setCoins(tradeoffers[input - 1]._ownerid, db.getCoinsByUserID(tradeoffers[input - 1]._ownerid) + tradeoffers[input - 1 ]._damagerequirement);
+                user1._coins = user1._coins - tradeoffers[input - 1]._damagerequirement; //maybe buggy, vll nochmal anschaun aba sollt passn
             }
-            input2 = InputHandler.getInstance().InputHandlerForInt(1, filteredstack.Count());
-
-            //db.deleteCardFromStack(tradeoffers[input - 1]._ownerid, tradeoffers[input - 1]._cardid);
-            db.deleteCardFromStack(user1._userid, filteredstack[input2 - 1]._cardid); //user looses old card
-
-            db.addCardToStack(user1._userid, tradeoffers[input - 1]._cardid); //user gets new card
-            db.addCardToStack(tradeoffers[input - 1]._ownerid, filteredstack[input2 - 1]._cardid);//provider gets new card
 
             db.deleteTradingOffer(tradeoffers[input - 1]._tradingid); //provider looses old card
 
@@ -96,6 +119,7 @@ namespace MTCG
         {
             Database db = new Database();
             int input = 0;
+            int input2 = 0; 
             int typerequirement = 0;
             int damagerequirement = 0; 
 
@@ -121,16 +145,30 @@ namespace MTCG
 
             input = InputHandler.getInstance().InputHandlerForInt(1, tempstack.Count());
 
-            Console.WriteLine("Enter whether your desired card should be a monster(1) or a spell(2)");
-            typerequirement = InputHandler.getInstance().InputHandlerForInt(1, 2);
-            typerequirement--;
+            Console.WriteLine("Do you want to trade your card against another card(1) or coins(2)?");
 
-            Console.WriteLine("Enter the min. damage your desired card must have. [10-100]");
-            damagerequirement = InputHandler.getInstance().InputHandlerForInt(10, 100);
+            input2 = InputHandler.getInstance().InputHandlerForInt(1, 2);
 
+            switch(input2)
+            {
+                case 1:
+                    Console.WriteLine("Enter whether your desired card should be a monster(1), a spell(2) or if you want to trade your card against coins(3)");
+                    typerequirement = InputHandler.getInstance().InputHandlerForInt(1, 2);
+                    typerequirement--;
+
+                    Console.WriteLine("Enter the min. damage your desired card must have. [10-100]");
+                    damagerequirement = InputHandler.getInstance().InputHandlerForInt(10, 100);
+                    break;
+                case 2:
+                    Console.WriteLine("Enter the amount of coins you want for your card. [1-100]");
+                    typerequirement = 10; 
+                    damagerequirement = InputHandler.getInstance().InputHandlerForInt(1, 100);
+                    break; 
+            }
             db.deleteCardFromStack(user1._userid, tempstack[input - 1]._cardid);
             db.addTradingOffer(user1._userid, tempstack[input - 1]._cardid, typerequirement, damagerequirement);
-                
+
+
         }
 
 

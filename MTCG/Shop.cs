@@ -34,8 +34,6 @@ namespace MTCG
                 }
             }
         }
-
-
         public void BuyCards(User user1)
         {
             Database db = new Database();

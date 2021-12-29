@@ -57,19 +57,6 @@ namespace MTCG
                     disconnect(); 
                     return false; 
                 }
-
-                /*
-                name = reader["name"].ToString();
-
-                Console.WriteLine(reader["coins"].ToString());
-
-                if (name == "Simon")
-                {
-                    Console.WriteLine("USER EXISTS");
-                    return 1; 
-                } 
-                */
-
             }
         }
 
@@ -873,7 +860,6 @@ namespace MTCG
                 cmd.Parameters.AddWithValue("tuid", thisuserid);
                 cmd.Parameters.AddWithValue("ouid", otheruserid);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-
 
                 if (reader.HasRows)
                 {
