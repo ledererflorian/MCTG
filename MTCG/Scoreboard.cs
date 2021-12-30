@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class Scoreboard
+    static class Scoreboard
     {
-        public void PrintScoreboard()
+        public static void PrintScoreboard()
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             List<User> userlist = db.getAllUsersOrderedByElo();
 
             Console.Clear(); 

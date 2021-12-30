@@ -11,54 +11,22 @@ namespace MTCG
 
         public void Start()
         {
-            Database db = new Database();
+            Database db = Database.getInstance(); 
 
-            Card card1 = new Card("Dragon", 10, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.dragon);
-            Card card2 = new Card("Firedragon", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.dragon);
-            Card card3 = new Card("Waterdragon", 15, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.dragon);
-
-            Card card4 = new Card("Goblin", 40, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.goblin);
-            Card card5 = new Card("Firegoblin", 20, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.goblin);
-            Card card6 = new Card("Watergoblin", 15, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.goblin);
-
-            Card card7 = new Card("Knight", 20, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.knight);
-            Card card8 = new Card("Firenight", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.knight);
-            Card card9 = new Card("Waterknight", 25, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.knight);
-
-
-            Card card10 = new Card("Wizzard", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.wizzard);
-            Card card11 = new Card("Fireizzard", 15, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.wizzard);
-            Card card12 = new Card("Waterwizzard", 25, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.wizzard);
-
-            Card card13 = new Card("Normal Spell", 25, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.spell);
-            Card card14 = new Card("Firespell", 25, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.spell);
-            Card card15 = new Card("Waterspell", 15, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.spell);
-
-            GameLogic gamelogic = new GameLogic();
-            Scoreboard scoreboard = new Scoreboard();
-            ProfilePage profilepage = new ProfilePage(); 
 
             User user2 = new User(0, "AI", 0, 0, 0, 0);
             Stack stack1 = new Stack();
             Stack stack2 = new Stack();
             Deck deck1 = new Deck();
             Deck deck2 = new Deck();
-
-
-
-            user2._userstack = stack2;
-
-            user2._userdeck = deck2;
-            /*
-            user2._userdeck.AddCard(card5);
-            user2._userdeck.AddCard(card6);
-            user2._userdeck.AddCard(card7);
-            user2._userdeck.AddCard(card8);
-            */
-            bool loggedin = false; 
-            int select = 0;
-            Console.WriteLine("Welcome to MTCG\n");
+            bool loggedin = false;
+            int select;
             int loggedinID = 0;
+            user2._userstack = stack2;
+            user2._userdeck = deck2;
+
+            Console.WriteLine("Welcome to MTCG\n");
+
 
             while (!loggedin)
             {
@@ -88,22 +56,22 @@ namespace MTCG
             }
 
             User user1 = db.getUserByUserID(loggedinID);
-            //user1._userid = loggedinID;
-            //user1._coins = db.getCoinsByUserID(user1._userid);
-            //user1._elo = db.getEloByUserID(user1._userid);
             user1._userstack = stack1;
             user1._userdeck = deck1;
 
-            Shop shop = new Shop();
-            Trading trading = new Trading();
-            CraftCard craftcard = new CraftCard();
-            Friends friends = new Friends(); 
+            //Shop shop = new Shop();
+            //Trading trading = new Trading();
+            //CraftCard craftcard = new CraftCard();
+            //Friends friends = new Friends();
+            //GameLogic gamelogic = new GameLogic();
+            //Scoreboard scoreboard = new Scoreboard();
+            //ProfilePage profilepage = new ProfilePage();
 
+            Console.Clear(); 
             while (true)
             {
                 Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7: Craft cards\n8: Friends\n9: Quit");
                 select = InputHandler.getInstance().InputHandlerForInt(1, 9);
-                //Console.Clear(); 
                 switch (select)
                 {
                     case 1:
@@ -120,20 +88,33 @@ namespace MTCG
                             Console.WriteLine("You are playing against " + db.getUsernameByUserID(user2._userid) + ".\nPress any key to continue");
                             Console.ReadKey();
 
-                            int battlewinner = gamelogic.BattleLogic(user1, user2);
-                            Console.WriteLine("\nPlayer " + battlewinner + " won the match!"); //Draw output adden
+                            int battlewinner = GameLogic.BattleLogic(user1, user2);
+                            Console.WriteLine("\nPlayer " + battlewinner + " won the battle!");
 
                             if (battlewinner == 1)
                             {
                                 user1.UpdateWin();
                                 user2.UpdateLoss();
+                                if(user1._wins % 10 == 0)
+                                {
+                                    user1._coins = user1._coins + 1; 
+                                    db.setCoins(user1._userid, db.getCoinsByUserID(user1._userid) + 1);
+                                    db.updateTransactionHistory(user1._userid, "[" + DateTime.Now + "]: Received 1 coin for winning 10 battles!\n");
+                                    Console.WriteLine("You received a coin for winning 10 games!");
+                                }
                             } else if(battlewinner == 2)
                             {
                                 user1.UpdateLoss();
                                 user2.UpdateWin(); 
+
+                                if(db.getWinsByUserID(user2._userid) % 10 == 0)
+                                {
+                                    db.setCoins(user2._userid, db.getCoinsByUserID(user2._userid) + 1);
+                                    db.updateTransactionHistory(user2._userid, "[" + DateTime.Now + "]: Received 1 coin for winning 10 battles!\n");
+                                }
                             } else
                             {
-
+                                Console.WriteLine("The round limit of 100 is exceeded... Nobody won the match.");
                             }
                             Console.WriteLine("Press any key to continue");
                             Console.ReadKey();
@@ -156,22 +137,23 @@ namespace MTCG
                         break;
                     case 3:
                         //user1.Shop();
-                        shop.ShopHub(user1);
+                        //shop.ShopHub(user1);
+                        Shop.ShopHub(user1);
                         break;
                     case 4:
-                        trading.TradingHub(user1);
+                        Trading.TradingHub(user1);
                         break;
                     case 5:
-                        scoreboard.PrintScoreboard();
+                        Scoreboard.PrintScoreboard();
                         break; 
                     case 6:
-                        profilepage.ProfileHub(user1);
+                        ProfilePage.ProfileHub(user1);
                         break;
                     case 7:
-                        craftcard.CraftingHub(user1); 
+                        CraftCard.CraftingHub(user1); 
                         break;
                     case 8:
-                        friends.FriendsHub(user1, user2); 
+                        Friends.FriendsHub(user1, user2); 
                         break; 
                     case 9:
                         return; 
@@ -185,7 +167,7 @@ namespace MTCG
 
         public void RegisterUser()
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             string username;
             string password;
 
@@ -206,7 +188,7 @@ namespace MTCG
 
         public int LoginUser()
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             int success = 0; 
             string username;
             var password = string.Empty;
@@ -243,21 +225,22 @@ namespace MTCG
             else
             {
                 Console.WriteLine();
-                Console.WriteLine("Login successful!");
+                Console.WriteLine("Login successful!\nPress any key to continue");
+                Console.ReadKey(); 
                 return success;
             }
         }
 
         public List<Card> LoadCurrentDeck(int uid)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             List<Card> deck = db.getSelectedStack(uid);
             return deck; 
         }
 
         public List<Card> LoadOpponentDeck(int uid, User user2)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             List<Card> opponentdeck = new List<Card>();
             int opponentid = 0; 
 
@@ -274,7 +257,7 @@ namespace MTCG
 
         public void CreateCardsInDB()
         {
-            Database db = new Database(); 
+            Database db = Database.getInstance(); 
             for(int i = 0; i < 101; i++)
             {
                 string name = "";

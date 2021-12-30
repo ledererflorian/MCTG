@@ -20,7 +20,7 @@ namespace MTCG
         /*
         public User(string name, int coins, int elo, int wins, int losses)
         {
-            //Database db = new Database(); 
+            //Database db = Database.getInstance(); 
             _name = name;
             _coins = coins;
             _elo = elo;
@@ -51,7 +51,7 @@ namespace MTCG
 
         public void CreateDeck()
         {
-            Database db = new Database(); 
+            Database db = Database.getInstance(); 
             int input = 0; 
             _userdeck._deck.Clear();
 
@@ -81,7 +81,7 @@ namespace MTCG
 
         public void UpdateWin()
         {
-            Database db = new Database(); 
+            Database db = Database.getInstance(); 
             db.increaseElo(_userid);
             db.incrementWins(_userid);
             _elo = _elo + 3;
@@ -90,7 +90,7 @@ namespace MTCG
 
         public void UpdateLoss()
         {
-            Database db = new Database(); 
+            Database db = Database.getInstance(); 
             db.decreaseElo(_userid);
             db.incrementLosses(_userid);
             _elo = _elo - 5;
@@ -113,7 +113,7 @@ namespace MTCG
 
         public void Shop()
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             int cardid = 0; 
 
             Console.Clear();

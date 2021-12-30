@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class Friends
+    static class Friends
     {
-        public void FriendsHub(User user1, User user2)
+        public static void FriendsHub(User user1, User user2)
         {
             Console.Clear();
             Console.WriteLine("Welcome to the Friends Menu!");
@@ -37,9 +37,9 @@ namespace MTCG
             }
         }
 
-        public void ListFriends(User user1, User user2)
+        public static void ListFriends(User user1, User user2)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             List<Friendrequest> friendlist = db.getFriendsbyUserID(user1._userid);
             
             if(friendlist.Count() == 0)
@@ -87,10 +87,10 @@ namespace MTCG
             }
         }
 
-        public void FriendBattle(User user1, User user2)
+        public static void FriendBattle(User user1, User user2)
         {
-            GameLogic gamelogic = new GameLogic(); 
-            Database db = new Database();
+            //GameLogic gamelogic = new GameLogic(); 
+            Database db = Database.getInstance();
             if (db.getSelectedCardCount(user1._userid) < 4)
             {
                 Console.WriteLine("Create a deck before fighting!");
@@ -115,23 +115,23 @@ namespace MTCG
                 Console.WriteLine("This battle won't affect your elo or winrate!\nPress any key to begin the battle!");
                 Console.ReadKey();
 
-                int battlewinner = gamelogic.BattleLogic(user1, user2);
+                int battlewinner = GameLogic.BattleLogic(user1, user2);
                 Console.WriteLine("\nPlayer " + battlewinner + " won the match!");
                 
             }
         }
 
-        public List<Card> LoadCurrentDeck(int uid)
+        public static List<Card> LoadCurrentDeck(int uid)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             List<Card> deck = db.getSelectedStack(uid);
             return deck;
         }
 
 
-        public void AddFriend(User user1)
+        public static void AddFriend(User user1)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             List<User> userlist = db.getAllUsersOrderedByElo();
 
             Console.Clear();
@@ -169,9 +169,9 @@ namespace MTCG
             Console.Clear();
         }
 
-        public void ManageFriendRequests(User user1)
+        public static void ManageFriendRequests(User user1)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             List<Friendrequest> friendrequests = db.getFriendRequests(user1._userid);
 
             if (friendrequests.Count() == 0)

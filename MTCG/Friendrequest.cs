@@ -22,7 +22,7 @@ namespace MTCG
 
         public void PrintFriendrequest()
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
 
             Console.WriteLine($"Friendrequest by {db.getUsernameByUserID(_thisuserid)}\n");
         }

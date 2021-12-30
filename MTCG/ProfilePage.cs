@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class ProfilePage
+    static class ProfilePage
     {
 
-        public void ProfileHub(User user1)
+        public static void ProfileHub(User user1)
         {
             int input = 0; 
             Console.Clear();       
@@ -34,9 +34,9 @@ namespace MTCG
             }
         }
 
-        public void PrintProfile(User user1)
+        public static void PrintProfile(User user1)
         {
-            Database db = new Database(); 
+            Database db = Database.getInstance(); 
             Console.WriteLine("Username: " + user1._name);
             Console.WriteLine("Coins: " + user1._coins);
             Console.WriteLine("Elo: " + user1._elo);
@@ -50,9 +50,9 @@ namespace MTCG
             }
         }
 
-        public void EditProfile(User user1)
+        public static void EditProfile(User user1)
         {
-            Database db = new Database(); 
+            Database db = Database.getInstance(); 
             string input = "";
             Console.WriteLine("Enter a new Status Message (max. 30 characters)");
             input = InputHandler.getInstance().InputHandlerForString(0, 30);
@@ -61,9 +61,9 @@ namespace MTCG
             Console.WriteLine("Profile text successfully changed!");
         }
 
-        public void ViewOtherUsers(User user1)
+        public static void ViewOtherUsers(User user1)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             List<User> userlist = db.getAllUsersOrderedByElo();
             int input = 0; 
             Console.Clear();

@@ -10,7 +10,23 @@ namespace MTCG
     class Database
     {
         const string connectionstring = "Host=localhost;Username=postgres;Password=;Database=postgres";
-        private NpgsqlConnection connection; 
+        private NpgsqlConnection connection;
+
+        static Database instance;
+        Database()
+        {
+
+        }
+
+        public static Database getInstance()
+        {
+            if (instance == null)
+            {
+                instance = new Database();
+            }
+            return instance;
+        }
+
 
         public NpgsqlConnection connect()
         {

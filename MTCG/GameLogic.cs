@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    public class GameLogic
+    public static class GameLogic
     {
 
-        public int BattleLogic(User user1, User user2)
+        public static int BattleLogic(User user1, User user2)
         {
-            Database db = new Database();  
             var rand = new Random();
             int winner = 0;
             int rounds = 1;
@@ -30,7 +29,6 @@ namespace MTCG
                 int rnumber1 = rand.Next(0, tempdeck1.Count);
                 int rnumber2 = rand.Next(0, tempdeck2.Count);
 
-
                 cardp1 = tempdeck1[rnumber1];
                 cardp2 = tempdeck2[rnumber2];
 
@@ -45,7 +43,6 @@ namespace MTCG
                 cardp2.PrintCard();
 
                 winner = calcWinner(cardp1, cardp2);
-
 
                 if (winner == 1)
                 {
@@ -76,29 +73,29 @@ namespace MTCG
             }
         }
 
-        public int calcWinner(Card cardp1, Card cardp2)
+        public static int calcWinner(Card cardp1, Card cardp2)
         {
             if (cardp1._weakness == cardp2._racetype && (cardp1._elementweakness == cardp2._elementtype || cardp1._elementweakness == ElementTypesEnum.ElementTypes.none))
             {
-                Console.WriteLine("Player 2 won due to weakness");
+                Console.WriteLine("Player 2 won the round due to weakness");
                 return 2;
 
             }
             else if (cardp2._weakness == cardp1._racetype && (cardp2._elementweakness == cardp1._elementtype || cardp2._elementweakness == ElementTypesEnum.ElementTypes.none))
             {
-                Console.WriteLine("Player 1 won due to weakness");
+                Console.WriteLine("Player 1 won the round due to weakness");
                 return 1;
             }
             else
             {
                 if (cardp2._damage * cardp2.IsEffective(cardp1) > cardp1._damage * cardp1.IsEffective(cardp2))
                 {
-                    Console.WriteLine("Player 2 won the battle");
+                    Console.WriteLine("Player 2 won the round");
                     return 2;
                 }
                 else if (cardp2._damage * cardp2.IsEffective(cardp1) < cardp1._damage * cardp1.IsEffective(cardp2))
                 {
-                    Console.WriteLine("Player 1 won the battle");
+                    Console.WriteLine("Player 1 won the round");
                     return 1;
                 }
                 else
@@ -109,8 +106,6 @@ namespace MTCG
                 }
             }
         }
-
-
 
     }
 }

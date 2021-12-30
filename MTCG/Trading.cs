@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class Trading
+    static class Trading
     {
+        const int COIN_TYPE = 10;
 
-        public void TradingHub(User user1)
+        public static void TradingHub(User user1)
         {
             Console.Clear(); 
             Console.WriteLine("Welcome to the Trade Center!");
@@ -34,9 +35,9 @@ namespace MTCG
             }
         }
 
-        public void Trade(User user1)
+        public static void Trade(User user1)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             int input = 0;
             int input2 = 0; 
             List<Tradeoffer> tradeoffers = db.getTradingOffers();
@@ -55,7 +56,7 @@ namespace MTCG
                 Console.WriteLine("Offer by " + db.getUsernameByUserID(tradeoffers[i]._ownerid));
                 Card card = db.getCardByID(tradeoffers[i]._cardid);
                 card.PrintCard();
-                if((int)tradeoffers[i]._typerequirement != 10)
+                if((int)tradeoffers[i]._typerequirement != COIN_TYPE)
                 {
                     Console.WriteLine("Requirements for Trade: [Cardtype: " + tradeoffers[i]._typerequirement + "] [min. Damage: " + tradeoffers[i]._damagerequirement + "]");
                 } else
@@ -69,7 +70,7 @@ namespace MTCG
 
             input = InputHandler.getInstance().InputHandlerForInt(1, tradeoffers.Count());
             
-            if((int)tradeoffers[input - 1]._typerequirement != 10)
+            if((int)tradeoffers[input - 1]._typerequirement != COIN_TYPE)
             {
                 List<Card> filteredstack = db.getCardsByRequirement(user1._userid, (int)tradeoffers[input - 1]._typerequirement, tradeoffers[input - 1]._damagerequirement);
 
@@ -107,6 +108,10 @@ namespace MTCG
                 db.setCoins(user1._userid, db.getCoinsByUserID(user1._userid) - tradeoffers[input - 1 ]._damagerequirement);
                 db.setCoins(tradeoffers[input - 1]._ownerid, db.getCoinsByUserID(tradeoffers[input - 1]._ownerid) + tradeoffers[input - 1 ]._damagerequirement);
                 user1._coins = user1._coins - tradeoffers[input - 1]._damagerequirement; //maybe buggy, vll nochmal anschaun aba sollt passn
+
+                db.updateTransactionHistory(user1._userid, "[" + DateTime.Now + "]: Spent " + tradeoffers[input - 1]._damagerequirement + " coins for a card in Trading Center\n");
+                db.updateTransactionHistory(tradeoffers[input - 1]._ownerid, "[" + DateTime.Now + "]: Received " + tradeoffers[input - 1]._damagerequirement + " coins for a card in Trading Center\n");
+
             }
 
             db.deleteTradingOffer(tradeoffers[input - 1]._tradingid); //provider looses old card
@@ -115,9 +120,10 @@ namespace MTCG
             
         }
 
-        public void OfferCard(User user1)
+        public static void OfferCard(User user1)
         {
-            Database db = new Database();
+
+            Database db = Database.getInstance();
             int input = 0;
             int input2 = 0; 
             int typerequirement = 0;
@@ -161,20 +167,18 @@ namespace MTCG
                     break;
                 case 2:
                     Console.WriteLine("Enter the amount of coins you want for your card. [1-100]");
-                    typerequirement = 10; 
+                    typerequirement = COIN_TYPE; 
                     damagerequirement = InputHandler.getInstance().InputHandlerForInt(1, 100);
                     break; 
             }
             db.deleteCardFromStack(user1._userid, tempstack[input - 1]._cardid);
             db.addTradingOffer(user1._userid, tempstack[input - 1]._cardid, typerequirement, damagerequirement);
-
-
         }
 
 
-        public void WithdrawOffer(User user1)
+        public static void WithdrawOffer(User user1)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             int input = 0;
             
             List<Tradeoffer> tradeoffers = db.getOwnTradingOffers(user1._userid);

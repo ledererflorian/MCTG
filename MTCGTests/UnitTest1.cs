@@ -16,10 +16,10 @@ namespace MTCGTests
             //ARRANGE
             Card card1 = new Card("Goblin", 100, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.goblin);
             Card card2 = new Card("Dragon", 1, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.dragon);
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int returnvalue = gamelogic.calcWinner(card1, card2);
+            int returnvalue = GameLogic.calcWinner(card1, card2);
 
             //ASSERT
             Assert.AreEqual(2, returnvalue);
@@ -31,10 +31,10 @@ namespace MTCGTests
             //ARRANGE
             Card card1 = new Card("Wizzard", 1, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.wizzard);
             Card card2 = new Card("Ork", 100, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.ork);
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int returnvalue = gamelogic.calcWinner(card1, card2);
+            int returnvalue = GameLogic.calcWinner(card1, card2);
 
             //ASSERT
             Assert.AreEqual(1, returnvalue);
@@ -46,10 +46,10 @@ namespace MTCGTests
             //ARRANGE
             Card card1 = new Card("Knight", 100, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.knight);
             Card card2 = new Card("WaterSpell", 1, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.spell);
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int returnvalue = gamelogic.calcWinner(card1, card2);
+            int returnvalue = GameLogic.calcWinner(card1, card2);
 
             //ASSERT
             Assert.AreEqual(2, returnvalue);
@@ -61,10 +61,10 @@ namespace MTCGTests
             //ARRANGE
             Card card1 = new Card("Knight", 100, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.knight);
             Card card2 = new Card("Spell", 1, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.spell);
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int returnvalue = gamelogic.calcWinner(card1, card2);
+            int returnvalue = GameLogic.calcWinner(card1, card2);
 
             //ASSERT
             Assert.AreEqual(1, returnvalue);
@@ -79,12 +79,12 @@ namespace MTCGTests
             Card card2 = new Card("Spell", 100, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.spell);
             Card card3 = new Card("FireSpell", 100, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.spell);
             Card card4 = new Card("WaterSpell", 100, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.spell);
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int returnvalue = gamelogic.calcWinner(card1, card2);
-            int returnvalue2 = gamelogic.calcWinner(card1, card3);
-            int returnvalue3 = gamelogic.calcWinner(card1, card4);
+            int returnvalue = GameLogic.calcWinner(card1, card2);
+            int returnvalue2 = GameLogic.calcWinner(card1, card3);
+            int returnvalue3 = GameLogic.calcWinner(card1, card4);
 
             //ASSERT
             Assert.AreEqual(1, returnvalue);
@@ -100,12 +100,12 @@ namespace MTCGTests
             Card fireelf = new Card("FireElf", 1, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.elf);
             Card waterelf = new Card("WaterElf", 1, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.elf);
             Card dragon = new Card("Dragon", 100, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.dragon);
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int returnvalue1 = gamelogic.calcWinner(fireelf, dragon);
-            int returnvalue2 = gamelogic.calcWinner(elf, dragon);
-            int returnvalue3 = gamelogic.calcWinner(waterelf, dragon);
+            int returnvalue1 = GameLogic.calcWinner(fireelf, dragon);
+            int returnvalue2 = GameLogic.calcWinner(elf, dragon);
+            int returnvalue3 = GameLogic.calcWinner(waterelf, dragon);
 
             //ASSERT
             Assert.AreEqual(1, returnvalue1);
@@ -145,10 +145,10 @@ namespace MTCGTests
             user2._userdeck = deck2; 
 
 
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int battlewinner = gamelogic.BattleLogic(user1, user2);
+            int battlewinner = GameLogic.BattleLogic(user1, user2);
 
             //ASSERT
             Assert.AreEqual(1, battlewinner);
@@ -186,10 +186,10 @@ namespace MTCGTests
             user2._userdeck = deck2;
 
 
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int battlewinner = gamelogic.BattleLogic(user1, user2);
+            int battlewinner = GameLogic.BattleLogic(user1, user2);
 
             //ASSERT
             Assert.AreEqual(2, battlewinner);
@@ -227,10 +227,10 @@ namespace MTCGTests
             user2._userdeck = deck2;
 
 
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int battlewinner = gamelogic.BattleLogic(user1, user2);
+            int battlewinner = GameLogic.BattleLogic(user1, user2);
 
             //ASSERT
             Assert.AreEqual(0, battlewinner);
@@ -270,12 +270,12 @@ namespace MTCGTests
             Card card4 = new Card("FireGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.goblin);
             Card card5 = new Card("WaterGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.goblin);
             Card card6 = new Card("Goblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.goblin);
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int returnvalue1 = gamelogic.calcWinner(card1, card6); //fire vs normal
-            int returnvalue2 = gamelogic.calcWinner(card2, card4); //water vs fire
-            int returnvalue3 = gamelogic.calcWinner(card3, card5); //normal vs water
+            int returnvalue1 = GameLogic.calcWinner(card1, card6); //fire vs normal
+            int returnvalue2 = GameLogic.calcWinner(card2, card4); //water vs fire
+            int returnvalue3 = GameLogic.calcWinner(card3, card5); //normal vs water
 
             //ASSERT
             if (returnvalue1 == 1 && returnvalue2 == 1 && returnvalue3 == 1) // 1 = first card wins
@@ -294,12 +294,12 @@ namespace MTCGTests
             Card card1 = new Card("FireGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.goblin);
             Card card2 = new Card("WaterGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.goblin);
             Card card3 = new Card("Goblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.goblin);
-            GameLogic gamelogic = new GameLogic();
+            //GameLogic gamelogic = new GameLogic();
 
             //ACT
-            int returnvalue1 = gamelogic.calcWinner(card1, card3); //fire vs normal
-            int returnvalue2 = gamelogic.calcWinner(card2, card1); //water vs fire
-            int returnvalue3 = gamelogic.calcWinner(card3, card2); //normal vs water
+            int returnvalue1 = GameLogic.calcWinner(card1, card3); //fire vs normal
+            int returnvalue2 = GameLogic.calcWinner(card2, card1); //water vs fire
+            int returnvalue3 = GameLogic.calcWinner(card3, card2); //normal vs water
 
             //ASSERT
             if (returnvalue1 == 0 && returnvalue2 == 0 && returnvalue3 == 0) //0 = draw

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class CraftCard
+    static class CraftCard
     {
-        public void CraftingHub(User user1)
+        public static void CraftingHub(User user1)
         {
             while (true)
             {
@@ -34,9 +34,9 @@ namespace MTCG
             }
         }
 
-        public void CraftElementFragment(User user1)
+        public static void CraftElementFragment(User user1)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             List<Card> filteredstack = db.getUnselectedStack(user1._userid); 
 
             if (filteredstack.Count() == 0)
@@ -79,11 +79,11 @@ namespace MTCG
 
         }
 
-        public void CraftNewCard(User user1)
+        public static void CraftNewCard(User user1)
         {
             const int REQUIRED_FRAGMENTS = 2;
 
-            Database db = new Database(); 
+            Database db = Database.getInstance(); 
 
             Console.WriteLine($"Spend {REQUIRED_FRAGMENTS} fragments of the same element type to acquire a card of the same element with a min. Damage of 40!\n");
 

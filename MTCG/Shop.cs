@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MTCG
 {
-    class Shop
+    static class Shop
     {
 
-        public void ShopHub(User user1)
+        public static void ShopHub(User user1)
         {
             Console.Clear();
             Console.WriteLine("Welcome to the Shop!");
@@ -30,13 +30,14 @@ namespace MTCG
                         ListTransactions(user1);
                         break;
                     case 3:
+                        Console.Clear(); 
                         return;
                 }
             }
         }
-        public void BuyCards(User user1)
+        public static void BuyCards(User user1)
         {
-            Database db = new Database();
+            Database db = Database.getInstance();
             int cardid = 0;
 
             Console.Clear();
@@ -83,9 +84,9 @@ namespace MTCG
             }
         }
 
-        public void ListTransactions(User user1)
+        public static void ListTransactions(User user1)
         {
-            Database db = new Database(); 
+            Database db = Database.getInstance(); 
 
             Console.Clear();
             string thistory = db.getTransactionHistory(user1._userid);
