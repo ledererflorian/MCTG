@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
 using NUnit.Framework;
 using MTCG;
 namespace MTCGTests
@@ -235,30 +242,7 @@ namespace MTCGTests
             //ASSERT
             Assert.AreEqual(0, battlewinner);
         }
-        /*
-        [Test]
-        public void InputHandlerReturnsCorrectValues()
-        {
-            
-            //ARRANGE
-            int min = 3;
-            int max = 15;
-            int returnvalue;
-
-            //ACT + ASSERT
-            for (int i = 0; i < 3; i++)
-            {
-                returnvalue = InputHandler.getInstance().InputHandlerForInt(min, max);
-                if(returnvalue > max || returnvalue < min)
-                {
-                    Assert.Fail(); 
-                }
-            }
-            Assert.Pass();
-            
-        }
-        */
-
+        
         [Test]
         public void Element_SpellEffectivenessAgainstMonsters()
         {
@@ -310,6 +294,31 @@ namespace MTCGTests
             {
                 Assert.Fail();
             }
+        }
+
+        [Test]
+        public void InputHandlerReturnsCorrectValues()
+        {
+
+            //ARRANGE
+            int min = 1;
+            int max = 4;
+            int returnvalue;
+
+
+            //ACT + ASSERT
+            for (int i = 1; i < 5; i++)
+            {
+                var stringReader = new StringReader(i.ToString());
+                Console.SetIn(stringReader);
+
+                returnvalue = InputHandler.getInstance().InputHandlerForInt(min, max);
+                if (returnvalue > max || returnvalue < min)
+                {
+                    Assert.Fail();
+                }
+            }
+            Assert.Pass();
         }
 
 

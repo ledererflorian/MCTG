@@ -33,7 +33,6 @@ namespace MTCG
                 }
             }
         }
-
         public static void PrintProfile(User user1)
         {
             Database db = Database.getInstance(); 

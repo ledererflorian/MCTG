@@ -61,11 +61,9 @@ namespace MTCG
             {
                 cmd.Parameters.AddWithValue("n", name);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-                //string name; 
                 
                 if(reader.HasRows)
                 {
-                    //reader.Read();
                     disconnect(); 
                     return true; 
                 } else
@@ -84,12 +82,10 @@ namespace MTCG
                 cmd.Parameters.AddWithValue("n", name);
                 cmd.Parameters.AddWithValue("p", password);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-                //string name; 
 
                 if (reader.HasRows)
                 {
                     reader.Read();
-                    //Console.WriteLine("UserID: " + reader["id"]);
                     int result = Convert.ToInt32(reader["id"]);
                     disconnect();
                     return result;
@@ -102,7 +98,7 @@ namespace MTCG
             }
         }
 
-        public List<User> getAllUsersOrderedByElo() //anker
+        public List<User> getAllUsersOrderedByElo()
         {
             connect();
             using (var cmd = new NpgsqlCommand("SELECT * FROM users ORDER BY elo DESC", connection))
@@ -184,7 +180,6 @@ namespace MTCG
                 Card card = new Card((string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
                 disconnect();
                 return card; 
-
             }
         }
         /*

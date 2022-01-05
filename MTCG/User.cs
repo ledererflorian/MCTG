@@ -17,17 +17,6 @@ namespace MTCG
 
         public Stack _userstack;
         public Deck _userdeck;
-        /*
-        public User(string name, int coins, int elo, int wins, int losses)
-        {
-            //Database db = Database.getInstance(); 
-            _name = name;
-            _coins = coins;
-            _elo = elo;
-            _wins = wins;
-            _losses = losses; 
-        }
-        */
 
         public User(string name, int coins, int elo, int wins, int losses)
         {
@@ -37,8 +26,6 @@ namespace MTCG
             _wins = wins;
             _losses = losses;
         }
-
-
         public User(int userid, string name, int coins, int elo, int wins, int losses)
         {
             _userid = userid; 
@@ -55,7 +42,6 @@ namespace MTCG
             int input = 0; 
             _userdeck._deck.Clear();
 
-            //List<Card> tempstack = new List<Card>(_userstack._stack);
             db.deselectCards(_userid);
             List<Card> tempstack = db.getStack(_userid); 
             
@@ -77,6 +63,10 @@ namespace MTCG
                 tempstack.RemoveAt(input - 1);
                 
             }
+            Console.WriteLine("Deck successfully created!\nPress any key to continue!");
+            _userdeck.PrintDeck();
+            Console.ReadKey();
+            Console.Clear(); 
         }
 
         public void UpdateWin()

@@ -128,10 +128,6 @@ namespace MTCG
                         } else
                         {
                         user1.CreateDeck();
-                        Console.WriteLine("Deck erstellt");
-                        user1._userdeck.PrintDeck();
-                        Console.WriteLine("----"); //remove
-                        user1._userstack.PrintStack(); //remove
                         }
 
                         break;
@@ -182,7 +178,8 @@ namespace MTCG
             } else
             {
                 db.addUser(username, password, 20, 100);
-                Console.WriteLine("Account successfuly created!");
+                Console.WriteLine("Account successfuly created!\nPress any key to continue!");
+                Console.ReadKey(); 
             }
         }
 
@@ -220,7 +217,6 @@ namespace MTCG
                 Console.WriteLine();
                 Console.WriteLine("Login failed!");
                 return 0;
-
             }
             else
             {

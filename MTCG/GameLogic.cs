@@ -19,7 +19,6 @@ namespace MTCG
 
             List<Card> tempdeck2 = new List<Card>(user2._userdeck._deck); 
 
-            
             Card cardp1;
             Card cardp2;
 

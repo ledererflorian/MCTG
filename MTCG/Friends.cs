@@ -89,7 +89,6 @@ namespace MTCG
 
         public static void FriendBattle(User user1, User user2)
         {
-            //GameLogic gamelogic = new GameLogic(); 
             Database db = Database.getInstance();
             if (db.getSelectedCardCount(user1._userid) < 4)
             {

@@ -17,14 +17,6 @@ namespace MTCG
 
         public void PrintDeck()
         {
-            /*
-            foreach (Card card in _deck)
-            {
-                card.PrintCard();
-
-            }
-            */
-
             for(int i = 0; i < _deck.Count; i++)
             {
                 _deck[i].PrintCard();
@@ -35,13 +27,5 @@ namespace MTCG
         {
             return _deck.Count;  
         }
-
-        /*
-        public Card GetCardAtIndex(int index)
-        {
-            Console.WriteLine("OUTPUTTT:" + _deck[index]);
-            return _deck[index];
-        }
-        */
     }
 }
