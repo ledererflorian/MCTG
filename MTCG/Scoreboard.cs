@@ -13,7 +13,17 @@ namespace MTCG
             Database db = Database.getInstance();
             List<User> userlist = db.getAllUsersOrderedByElo();
 
-            Console.Clear(); 
+            for(int i = 0; i < userlist.Count(); i++)
+            {
+                if((userlist[i]._wins + userlist[i]._losses) < 5)
+                {
+                    userlist.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            Console.Clear();
+            Console.WriteLine("A user gets displayed on the scoreboard, as soon as he played at least 5 games!\n");
             for(int i = 0; i < userlist.Count(); i++)
             {
                 Console.Write($"Rank {i + 1}: ");

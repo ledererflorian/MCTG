@@ -40,6 +40,8 @@ namespace MTCG
             Console.WriteLine("Coins: " + user1._coins);
             Console.WriteLine("Elo: " + user1._elo);
             Console.WriteLine("Status: " + db.getProfiletextByUserID(user1._userid));
+            Console.WriteLine("Wins: " + user1._wins);
+            Console.WriteLine("Losses: " + user1._losses);
             if(user1._wins == 0 && user1._losses == 0)
             {
                 Console.WriteLine("Winrate: No games played yet");

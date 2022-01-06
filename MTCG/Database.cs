@@ -303,10 +303,10 @@ namespace MTCG
             disconnect();
         }
 
-        public void deleteCardFromStack(int userid, int cardid) //fix duplicate deletion problem, i guess mit stackID
+        public void deleteCardFromStack(int userid, int cardid) //fix duplicate deletion problem, i guess mit stackID //fixed i guess
         {
             connect();
-            using (var cmd = new NpgsqlCommand("DELETE FROM stack WHERE userid = @uid AND cardid = @cid", connection))
+            using (var cmd = new NpgsqlCommand("DELETE FROM stack WHERE id IN(SELECT id FROM stack WHERE userid = @uid AND cardid = @cid LIMIT 1)", connection))
             {
                 cmd.Parameters.AddWithValue("uid", userid);
                 cmd.Parameters.AddWithValue("cid", cardid);
@@ -314,6 +314,8 @@ namespace MTCG
             }
             disconnect();
         }
+
+        
 
         public int getCardCount(int userid)
         {

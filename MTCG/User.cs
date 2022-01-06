@@ -38,7 +38,15 @@ namespace MTCG
 
         public void CreateDeck()
         {
-            Database db = Database.getInstance(); 
+            Database db = Database.getInstance();
+            if (db.getCardCount(_userid) < 4)
+            {
+                Console.WriteLine("You have to buy some cards before you can create a deck!\nPress any key to continue!");
+                Console.ReadKey(); 
+                Console.Clear();
+                return; 
+            }
+
             int input = 0; 
             _userdeck._deck.Clear();
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+//using System.Security.Cryptography;
 
 namespace MTCG
 {
@@ -78,68 +79,25 @@ namespace MTCG
                         if(db.getSelectedCardCount(user1._userid) < 4)
                         {
                             Console.WriteLine("Create a deck before fighting!");
-                        } else
-                        {
-                            user1._userdeck._deck = LoadCurrentDeck(user1._userid);
-                            Console.WriteLine("Looking for opponent...");
-                          
-                            user2._userdeck._deck = LoadOpponentDeck(user1._userid, user2);
-
-                            Console.WriteLine("You are playing against " + db.getUsernameByUserID(user2._userid) + ".\nPress any key to continue");
-                            Console.ReadKey();
-
-                            int battlewinner = GameLogic.BattleLogic(user1, user2);
-                            Console.WriteLine("\nPlayer " + battlewinner + " won the battle!");
-
-                            if (battlewinner == 1)
-                            {
-                                user1.UpdateWin();
-                                user2.UpdateLoss();
-                                if(user1._wins % 10 == 0)
-                                {
-                                    user1._coins = user1._coins + 1; 
-                                    db.setCoins(user1._userid, db.getCoinsByUserID(user1._userid) + 1);
-                                    db.updateTransactionHistory(user1._userid, "[" + DateTime.Now + "]: Received 1 coin for winning 10 battles!\n");
-                                    Console.WriteLine("You received a coin for winning 10 games!");
-                                }
-                            } else if(battlewinner == 2)
-                            {
-                                user1.UpdateLoss();
-                                user2.UpdateWin(); 
-
-                                if(db.getWinsByUserID(user2._userid) % 10 == 0)
-                                {
-                                    db.setCoins(user2._userid, db.getCoinsByUserID(user2._userid) + 1);
-                                    db.updateTransactionHistory(user2._userid, "[" + DateTime.Now + "]: Received 1 coin for winning 10 battles!\n");
-                                }
-                            } else
-                            {
-                                Console.WriteLine("The round limit of 100 is exceeded... Nobody won the match.");
-                            }
-                            Console.WriteLine("Press any key to continue");
-                            Console.ReadKey();
-                            Console.Clear();
+                            break; 
                         }
+
+                        LoadDecks(user1, user2);
+
+                        HandleBattleResult(user1, user2, GameLogic.BattleLogic(user1, user2));
+                        
                         break;
-                    case 2:
-                        if(db.getCardCount(user1._userid) < 4)
-                        {
-                            Console.WriteLine("You have to buy some cards before you can create a deck!");
-                        } else
-                        {
+                    case 2:                        
                         user1.CreateDeck();
-                        }
-
                         break;
                     case 3:
-                        //user1.Shop();
-                        //shop.ShopHub(user1);
                         Shop.ShopHub(user1);
                         break;
                     case 4:
                         Trading.TradingHub(user1);
                         break;
                     case 5:
+
                         Scoreboard.PrintScoreboard();
                         break; 
                     case 6:
@@ -161,6 +119,56 @@ namespace MTCG
 
         }
 
+        public void HandleBattleResult(User user1, User user2, int battlewinner)
+        {
+            Console.WriteLine("\nPlayer " + battlewinner + " won the battle!");
+
+            Database db = Database.getInstance(); 
+            if (battlewinner == 1)
+            {
+                user1.UpdateWin();
+                user2.UpdateLoss();
+                if (user1._wins % 10 == 0)
+                {
+                    user1._coins = user1._coins + 1;
+                    db.setCoins(user1._userid, db.getCoinsByUserID(user1._userid) + 1);
+                    db.updateTransactionHistory(user1._userid, "[" + DateTime.Now + "]: Received 1 coin for winning 10 battles!\n");
+                    Console.WriteLine("You received a coin for winning 10 games!");
+                }
+            }
+            else if (battlewinner == 2)
+            {
+                user1.UpdateLoss();
+                user2.UpdateWin();
+
+                if (db.getWinsByUserID(user2._userid) % 10 == 0)
+                {
+                    db.setCoins(user2._userid, db.getCoinsByUserID(user2._userid) + 1);
+                    db.updateTransactionHistory(user2._userid, "[" + DateTime.Now + "]: Received 1 coin for winning 10 battles!\n");
+                }
+            }
+            else
+            {
+                Console.WriteLine("The round limit of 100 is exceeded... Nobody won the match.");
+            }
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
+        public void LoadDecks(User user1, User user2)
+        {
+            Database db = Database.getInstance(); 
+
+            user1._userdeck._deck = LoadCurrentDeck(user1._userid);
+            Console.WriteLine("Looking for opponent...");
+
+            user2._userdeck._deck = LoadOpponentDeck(user1._userid, user2);
+
+            Console.WriteLine("You are playing against " + db.getUsernameByUserID(user2._userid) + ".\nPress any key to continue");
+            Console.ReadKey();
+        }
+
         public void RegisterUser()
         {
             Database db = Database.getInstance();
@@ -168,11 +176,11 @@ namespace MTCG
             string password;
 
             Console.WriteLine("Enter username: ");
-            username = Convert.ToString(Console.ReadLine());
+            username = InputHandler.getInstance().InputHandlerForString(1, 10);
             Console.WriteLine("Enter password: ");
-            password = Convert.ToString(Console.ReadLine());
+            password = InputHandler.getInstance().InputHandlerForString(8, 255);
 
-            if(db.userExists(username) == true)
+            if (db.userExists(username) == true)
             {
                 Console.WriteLine("Error: Username already exists!");
             } else

@@ -233,9 +233,6 @@ namespace MTCGTests
             user1._userdeck = deck1;
             user2._userdeck = deck2;
 
-
-            //GameLogic gamelogic = new GameLogic();
-
             //ACT
             int battlewinner = GameLogic.BattleLogic(user1, user2);
 
@@ -243,63 +240,83 @@ namespace MTCGTests
             Assert.AreEqual(0, battlewinner);
         }
         
+
         [Test]
-        public void Element_SpellEffectivenessAgainstMonsters()
+        public void ElementEffectiveness_FireSpellAgainstNormalMonster()
         {
             //ARRANGE
             Card card1 = new Card("FireSpell", 10, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.none);
-            Card card2 = new Card("WaterSpell", 10, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.none);
-            Card card3 = new Card("Spell", 10, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.none);
-
-            Card card4 = new Card("FireGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.goblin);
-            Card card5 = new Card("WaterGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.goblin);
-            Card card6 = new Card("Goblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.goblin);
-            //GameLogic gamelogic = new GameLogic();
-
-            //ACT
-            int returnvalue1 = GameLogic.calcWinner(card1, card6); //fire vs normal
-            int returnvalue2 = GameLogic.calcWinner(card2, card4); //water vs fire
-            int returnvalue3 = GameLogic.calcWinner(card3, card5); //normal vs water
-
-            //ASSERT
-            if (returnvalue1 == 1 && returnvalue2 == 1 && returnvalue3 == 1) // 1 = first card wins
-            {
-                Assert.Pass();
-            } else
-            {
-                Assert.Fail(); 
-            }
+            Card card2 = new Card("Goblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.goblin);
+            
+            //ACT & ASSERT
+            Assert.AreEqual(GameLogic.calcWinner(card1, card2), 1);
         }
 
         [Test]
-        public void Element_MonsterEffectivenessAgainstMonsters()
+        public void ElementEffectiveness_WaterSpellAgainstFireMonster()
+        {
+            //ARRANGE
+            Card card1 = new Card("WaterSpell", 10, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.none);
+            Card card2 = new Card("FireGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.goblin);
+
+            //ACT & ASSERT
+            Assert.AreEqual(GameLogic.calcWinner(card1, card2), 1);       
+        }
+
+        [Test]
+        public void ElementEffectiveness_NormalSpellAgainstWaterMonster()
+        {
+            //ARRANGE
+            Card card1 = new Card("Spell", 10, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.none);
+            Card card2 = new Card("WaterGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.goblin);
+
+                //ACT & ASSERT
+                Assert.AreEqual(GameLogic.calcWinner(card1, card2), 1);
+        }
+
+        [Test]
+        public void NoElementEffectiveness_FireMonsterAgainstNormalMonster()
         {
             //ARRANGE
             Card card1 = new Card("FireGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.goblin);
             Card card2 = new Card("WaterGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.goblin);
-            Card card3 = new Card("Goblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.goblin);
-            //GameLogic gamelogic = new GameLogic();
 
-            //ACT
-            int returnvalue1 = GameLogic.calcWinner(card1, card3); //fire vs normal
-            int returnvalue2 = GameLogic.calcWinner(card2, card1); //water vs fire
-            int returnvalue3 = GameLogic.calcWinner(card3, card2); //normal vs water
-
-            //ASSERT
-            if (returnvalue1 == 0 && returnvalue2 == 0 && returnvalue3 == 0) //0 = draw
-            {
-                Assert.Pass();
-            }
-            else
-            {
-                Assert.Fail();
-            }
+            //ACT & ASSERT
+            Assert.AreEqual(GameLogic.calcWinner(card1, card2), 0);
         }
+
+        [Test]
+        public void NoElementEffectiveness_NormalMonsterAgainstFireMonster()
+        {
+            //ARRANGE
+            Card card1 = new Card("Goblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.goblin);
+            Card card2 = new Card("FireGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.goblin);
+
+            //ACT & ASSERT
+            Assert.AreEqual(GameLogic.calcWinner(card1, card2), 0);
+        }
+
+        [Test]
+        public void NoElementEffectiveness_WaterMonsterAgainstFireMonster()
+        {
+            //ARRANGE
+            Card card1 = new Card("FireGoblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.goblin);
+            Card card2 = new Card("Goblin", 30, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.goblin);
+
+            //ACT & ASSERT
+            Assert.AreEqual(GameLogic.calcWinner(card1, card2), 0);
+        }
+
+
+
+
+
+
+
 
         [Test]
         public void InputHandlerReturnsCorrectValues()
         {
-
             //ARRANGE
             int min = 1;
             int max = 4;

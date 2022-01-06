@@ -63,7 +63,11 @@ namespace MTCG
                 if(input.Length > max)
                 {
                     Console.WriteLine($"Please enter a shorter message! [{min}-{max}]");
-                } else
+                } else if(input.Length < min)
+                {
+                    Console.WriteLine($"Please enter a longer message! [{min}-{max}]");
+                }
+                else 
                 {
                     abort = true; 
                 }
