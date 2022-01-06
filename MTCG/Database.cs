@@ -12,7 +12,7 @@ namespace MTCG
         const string connectionstring = "Host=localhost;Username=postgres;Password=;Database=postgres";
         private NpgsqlConnection connection;
 
-        static Database instance;
+        static Database instance = new Database();
         Database()
         {
 
@@ -20,10 +20,6 @@ namespace MTCG
 
         public static Database getInstance()
         {
-            if (instance == null)
-            {
-                instance = new Database();
-            }
             return instance;
         }
 
@@ -409,10 +405,10 @@ namespace MTCG
             }
         }
 
-        public int getOtherRandomUserID(int uid)
+        public int getOtherRandomUserIDWithActiveDeck(int uid)
         {
             connect();
-            using (var cmd = new NpgsqlCommand("SELECT * FROM users WHERE id != @uid ORDER BY RANDOM()", connection))
+            using (var cmd = new NpgsqlCommand("SELECT userid FROM stack WHERE NOT userid = 10 AND selected = true GROUP BY userid HAVING COUNT(userid)  = 4 ORDER BY RANDOM()", connection))
             {
                 cmd.Parameters.AddWithValue("uid", uid);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -421,12 +417,11 @@ namespace MTCG
                 {
                     reader.Read();
                 }
-                int userid = Convert.ToInt32(reader["id"]);
+                int userid = Convert.ToInt32(reader["userid"]);
                 disconnect();
                 return userid;
             }
         }
-
         public int getCoinsByUserID(int userid)
         {
             connect();
@@ -862,6 +857,26 @@ namespace MTCG
                 }
                 disconnect();
                 return requestlist;
+            }
+        }
+
+        public int getFriendRequestsCount(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT COUNT(friendsid) AS frq FROM friends WHERE otheruserid = @uid AND accepted = FALSE", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                int friendrequestscount = 0; 
+
+                if (reader.HasRows)
+                {
+                    reader.Read(); 
+                    friendrequestscount = Convert.ToInt32(reader["frq"]);
+                }
+                disconnect();
+                return friendrequestscount;
             }
         }
 

@@ -107,11 +107,10 @@ namespace MTCG
 
                 db.setCoins(user1._userid, db.getCoinsByUserID(user1._userid) - tradeoffers[input - 1 ]._damagerequirement);
                 db.setCoins(tradeoffers[input - 1]._ownerid, db.getCoinsByUserID(tradeoffers[input - 1]._ownerid) + tradeoffers[input - 1 ]._damagerequirement);
-                user1._coins = user1._coins - tradeoffers[input - 1]._damagerequirement; //maybe buggy, vll nochmal anschaun aba sollt passn
+                user1._coins = user1._coins - tradeoffers[input - 1]._damagerequirement;
 
                 db.updateTransactionHistory(user1._userid, "[" + DateTime.Now + "]: Spent " + tradeoffers[input - 1]._damagerequirement + " coins for a card in Trading Center\n");
                 db.updateTransactionHistory(tradeoffers[input - 1]._ownerid, "[" + DateTime.Now + "]: Received " + tradeoffers[input - 1]._damagerequirement + " coins for a card in Trading Center\n");
-
             }
 
             db.deleteTradingOffer(tradeoffers[input - 1]._tradingid); //provider looses old card
@@ -136,7 +135,7 @@ namespace MTCG
 
             if(tempstack.Count() == 0)
             {
-                Console.WriteLine("You don't own any cards to create a trading offer!"); //move to menu later
+                Console.WriteLine("You don't own any cards to create a trading offer!");
                 return; 
             }
 
@@ -185,7 +184,9 @@ namespace MTCG
 
             if (tradeoffers.Count() == 0)
             {
-                Console.WriteLine("You haven't submitted any cards yet!");
+                Console.WriteLine("You haven't submitted any cards yet!\nPress any key to return to the menu!");
+                Console.ReadKey();
+                Console.Clear(); 
                 return;
             }
 

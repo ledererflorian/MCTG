@@ -107,7 +107,6 @@ namespace MTCGTests
             Card fireelf = new Card("FireElf", 1, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.elf);
             Card waterelf = new Card("WaterElf", 1, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.elf);
             Card dragon = new Card("Dragon", 100, CardTypesEnum.CardTypes.monster, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.dragon);
-            //GameLogic gamelogic = new GameLogic();
 
             //ACT
             int returnvalue1 = GameLogic.calcWinner(fireelf, dragon);
@@ -151,9 +150,6 @@ namespace MTCGTests
             user1._userdeck = deck1; 
             user2._userdeck = deck2; 
 
-
-            //GameLogic gamelogic = new GameLogic();
-
             //ACT
             int battlewinner = GameLogic.BattleLogic(user1, user2);
 
@@ -191,9 +187,6 @@ namespace MTCGTests
 
             user1._userdeck = deck1;
             user2._userdeck = deck2;
-
-
-            //GameLogic gamelogic = new GameLogic();
 
             //ACT
             int battlewinner = GameLogic.BattleLogic(user1, user2);
@@ -306,13 +299,6 @@ namespace MTCGTests
             //ACT & ASSERT
             Assert.AreEqual(GameLogic.calcWinner(card1, card2), 0);
         }
-
-
-
-
-
-
-
 
         [Test]
         public void InputHandlerReturnsCorrectValues()

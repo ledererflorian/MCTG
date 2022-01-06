@@ -8,7 +8,7 @@ namespace MTCG
 {
     public class InputHandler
     {
-        static InputHandler instance;
+        static InputHandler instance = new InputHandler();
         InputHandler()
         {
 
@@ -16,10 +16,6 @@ namespace MTCG
 
         public static InputHandler getInstance()
         {
-            if (instance == null)
-            {
-                instance = new InputHandler();
-            }
             return instance;
         }
 

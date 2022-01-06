@@ -10,13 +10,15 @@ namespace MTCG
     {
         public static void FriendsHub(User user1, User user2)
         {
+            Database db = Database.getInstance(); 
+
             Console.Clear();
             Console.WriteLine("Welcome to the Friends Menu!");
             Console.WriteLine();
 
             while (true)
             {
-                Console.WriteLine("1: List Friends\n2: Send Friend Request\n3: Incoming Friend Requests\n4: Return to main menu\n");
+                Console.WriteLine($"1: List Friends\n2: Send Friend Request\n3: Incoming Friend Requests({db.getFriendRequestsCount(user1._userid)})\n4: Return to main menu\n");
                 int select = InputHandler.getInstance().InputHandlerForInt(1, 4);
 
                 switch (select)
@@ -60,11 +62,11 @@ namespace MTCG
             Console.WriteLine("\nEnter a friend you want to interact with by entering the associated ID!");
 
             int input = InputHandler.getInstance().InputHandlerForInt(1, friendlist.Count());
+            Console.Clear(); 
             int selectedfriend = friendlist[input - 1]._otheruserid;
             string friendname = db.getUsernameByUserID(selectedfriend);
             Console.WriteLine($"1: Battle {friendname}\n2: View stats of {friendname}\n3: Delete {friendname} from friendlist\n4: Return to friends menu");
             user2 = db.getUserByUserID(selectedfriend);
-            Console.WriteLine(user2._userid);
 
             int input2 = InputHandler.getInstance().InputHandlerForInt(1, 4);
 
@@ -75,11 +77,15 @@ namespace MTCG
                     FriendBattle(user1, user2);
                     break;
                 case 2:
-                    user2.PrintUser(); 
+                    Console.Clear(); 
+                    user2.PrintUser();
+                    Console.WriteLine("\nPress any key to return to the menu!");
+                    Console.ReadKey();
+                    Console.Clear(); 
                     break;
                 case 3:
                     db.deleteFriend(user1._userid, selectedfriend);
-                    Console.WriteLine($"You have deleted {selectedfriend} from your friendlist!\n Press any key to continue.");
+                    Console.WriteLine($"You have deleted {friendname} from your friendlist!\nPress any key to continue.");
                     Console.ReadKey(); 
                     break;
                 case 4:
@@ -111,8 +117,10 @@ namespace MTCG
                 user1._userdeck._deck = LoadCurrentDeck(user1._userid);
                 user2._userdeck._deck = LoadCurrentDeck(user2._userid);
 
+                Console.Clear(); 
                 Console.WriteLine("This battle won't affect your elo or winrate!\nPress any key to begin the battle!");
                 Console.ReadKey();
+                Console.Clear(); 
 
                 int battlewinner = GameLogic.BattleLogic(user1, user2);
                 Console.WriteLine("\nPlayer " + battlewinner + " won the match!");
@@ -158,12 +166,13 @@ namespace MTCG
             {
                 Console.WriteLine($"\nA friendrequest to {db.getUsernameByUserID(otherid)} has already been sent!\nPress any key to return to the menu!");
                 Console.ReadKey();
+                Console.Clear(); 
                 return; 
             }
             db.sendFriendRequest(user1._userid, otherid);
 
             Console.WriteLine();
-            Console.WriteLine("Press any key to return to the menu");
+            Console.WriteLine("Friendrequest successfully sent!\nPress any key to return to the menu");
             Console.ReadKey();
             Console.Clear();
         }
@@ -175,7 +184,9 @@ namespace MTCG
 
             if (friendrequests.Count() == 0)
             {
-                Console.WriteLine("You don't have any friendrequests!"); 
+                Console.WriteLine("You don't have any friendrequests!\nPress any key to return to the menu!");
+                Console.ReadKey();
+                Console.Clear(); 
                 return;
             }
 
@@ -199,8 +210,7 @@ namespace MTCG
                 db.acceptFriendRequest(friendrequests[input - 1]._friendid);
                 db.acceptFriendRequestMirror(user1._userid, friendrequests[input - 1]._thisuserid);
             }
-            else {
-                Console.WriteLine(friendrequests[input - 1]._friendid + " " + user1._userid); 
+            else { 
                 db.declineFriendRequest(friendrequests[input - 1]._friendid);
             }
 

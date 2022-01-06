@@ -14,7 +14,6 @@ namespace MTCG
         {
             Database db = Database.getInstance(); 
 
-
             User user2 = new User(0, "AI", 0, 0, 0, 0);
             Stack stack1 = new Stack();
             Stack stack2 = new Stack();
@@ -73,6 +72,7 @@ namespace MTCG
             {
                 Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7: Craft cards\n8: Friends\n9: Quit");
                 select = InputHandler.getInstance().InputHandlerForInt(1, 9);
+                InputHandler inputhandler = InputHandler.getInstance(); 
                 switch (select)
                 {
                     case 1:
@@ -250,7 +250,7 @@ namespace MTCG
 
             while (opponentdeck.Count() == 0)
             {
-                opponentid = db.getOtherRandomUserID(uid);
+                opponentid = db.getOtherRandomUserIDWithActiveDeck(uid);
                 opponentdeck = db.getSelectedStack(opponentid);
             }
             user2._userid = opponentid; 
