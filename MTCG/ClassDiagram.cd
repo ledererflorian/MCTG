@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MTCG.Card" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIABAIQAAAEAAAAAgEAAAAAAABAAAAAACAAAAAAQ=</HashCode>
+      <FileName>Card.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.CardTypesEnum" Collapsed="true">
+    <Position X="13.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CardTypesEnum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.CraftCard" Collapsed="true">
+    <Position X="11.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIEAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>CraftCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Database" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ECgQQikhBhAIAYKEiARPAgQMABBANgUIACAEIwyWYDQ=</HashCode>
+      <FileName>Database.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Deck" Collapsed="true">
+    <Position X="10" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAwAAAAAAAA=</HashCode>
+      <FileName>Deck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.ElementTypesEnum" Collapsed="true">
+    <Position X="13.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ElementTypesEnum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Friendrequest" Collapsed="true">
+    <Position X="11.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAEAABAAAEAAAAAAAA=</HashCode>
+      <FileName>Friendrequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Friends" Collapsed="true">
+    <Position X="11.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAACAAABAAABAAAQAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Friends.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.GameLogic" Collapsed="true">
+    <Position X="11.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>GameLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.InputHandler" Collapsed="true">
+    <Position X="8.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABBAAAQAAAAIAAAAAAA=</HashCode>
+      <FileName>InputHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Menu" Collapsed="true">
+    <Position X="6.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAAAAAAGAAAAAAAAAAEAAAAQAAAAACAAAQAAAAAAE=</HashCode>
+      <FileName>Menu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.ProfilePage" Collapsed="true">
+    <Position X="11.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAgAAAAAAAAAAAAAAAAAAAQAAAAAAAEA=</HashCode>
+      <FileName>ProfilePage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Program" Collapsed="true">
+    <Position X="4.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.RaceTypesEnum" Collapsed="true">
+    <Position X="13.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RaceTypesEnum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Scoreboard" Collapsed="true">
+    <Position X="11.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Scoreboard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Shop" Collapsed="true">
+    <Position X="11.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAgAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Stack" Collapsed="true">
+    <Position X="10" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAABAAAAAABAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Stack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Tradeoffer" Collapsed="true">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAEAEAAAgAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tradeoffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.Trading" Collapsed="true">
+    <Position X="11.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAIABBAAAAAEAAA=</HashCode>
+      <FileName>Trading.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MTCG.User" Collapsed="true">
+    <Position X="10" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIBAAAIQAEAAAgIAAAAAAAACAAAQIQAAACAAIAAA=</HashCode>
+      <FileName>User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

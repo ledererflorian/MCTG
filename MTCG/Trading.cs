@@ -200,14 +200,24 @@ namespace MTCG
                 Console.WriteLine("Offer by " + db.getUsernameByUserID(tradeoffers[i]._ownerid));
                 Card card = db.getCardByID(tradeoffers[i]._cardid);
                 card.PrintCard();
-                Console.WriteLine("Requirements for Trade: Cardtype: " + tradeoffers[i]._typerequirement + " | min. Damage: " + tradeoffers[i]._damagerequirement);
-            }
 
+                if((int)tradeoffers[i]._typerequirement == 10)
+                {
+                    Console.WriteLine("Requirements for Trade: " + tradeoffers[i]._damagerequirement + " coin(s)");
+                } else
+                {
+                    Console.WriteLine("Requirements for Trade: Cardtype: " + tradeoffers[i]._typerequirement + " | min. Damage: " + tradeoffers[i]._damagerequirement);
+                }
+
+                
+            }
             input = InputHandler.getInstance().InputHandlerForInt(1, tradeoffers.Count());
 
             db.deleteTradingOffer(tradeoffers[input - 1]._tradingid);
             db.addCardToStack(user1._userid, tradeoffers[input - 1]._cardid);
-            Console.WriteLine("Your card has been removed from the market and returned to your stack!");
+            Console.WriteLine("Your card has been removed from the market and returned to your stack!\nPress any key to continue!");
+            Console.ReadKey();
+            Console.Clear(); 
         }
 
 

@@ -134,11 +134,11 @@ namespace MTCG
 
         public void HandleBattleResult(User user1, User user2, int battlewinner)
         {
-            Console.WriteLine("\nPlayer " + battlewinner + " won the battle!");
-
+            
             Database db = Database.getInstance(); 
             if (battlewinner == 1)
             {
+                Console.WriteLine("\nPlayer " + battlewinner + " won the battle!");
                 user1.UpdateWin();
                 user2.UpdateLoss();
                 if (user1._wins % 10 == 0)
@@ -151,6 +151,7 @@ namespace MTCG
             }
             else if (battlewinner == 2)
             {
+                Console.WriteLine("\nPlayer " + battlewinner + " won the battle!");
                 user1.UpdateLoss();
                 user2.UpdateWin();
 
@@ -262,15 +263,10 @@ namespace MTCG
             Database db = Database.getInstance();
             List<Card> opponentdeck = new List<Card>();
             int opponentid = 0; 
-
-            while (opponentdeck.Count() == 0)
-            {
-                opponentid = db.getOtherRandomUserIDWithActiveDeck(uid);
-                opponentdeck = db.getSelectedStack(opponentid);
-            }
+            opponentid = db.getOtherRandomUserIDWithActiveDeck(uid);
+            opponentdeck = db.getSelectedStack(opponentid);
             user2._userid = opponentid; 
             return opponentdeck; 
-
         }
 
         public void CreateCardsInDB() //generates random Cards in Database; irrelevant for casual use. helped during developement

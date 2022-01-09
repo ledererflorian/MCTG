@@ -999,7 +999,5 @@ namespace MTCG
             }
         }
 
-
-
     }
 }

@@ -12,10 +12,6 @@ namespace MTCGTests
     public class Tests
     {
         
-        [SetUp]
-        public void Setup()
-        {
-        }
 
         [Test]
         public void DragonsDefeatGoblins()
@@ -298,6 +294,39 @@ namespace MTCGTests
 
             //ACT & ASSERT
             Assert.AreEqual(GameLogic.calcWinner(card1, card2), 0);
+        }
+
+        [Test]
+        public void ElementEffectiveness_FireSpellAgainstNormalSpell()
+        {
+            //ARRANGE
+            Card card1 = new Card("Firespell", 10, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.none);
+            Card card2 = new Card("Spell", 30, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.none);
+
+            //ACT & ASSERT
+            Assert.AreEqual(1, GameLogic.calcWinner(card1, card2));
+        }
+
+        [Test]
+        public void ElementEffectiveness_NormalSpellAgainstWaterSpell()
+        {
+            //ARRANGE
+            Card card1 = new Card("Spell", 10, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.normal, RaceTypesEnum.RaceTypes.none);
+            Card card2 = new Card("WaterSpell", 30, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.none);
+
+            //ACT & ASSERT
+            Assert.AreEqual(1, GameLogic.calcWinner(card1, card2));
+        }
+
+        [Test]
+        public void ElementEffectiveness_WaterSpellAgainstFireSpell()
+        {
+            //ARRANGE
+            Card card1 = new Card("WaterSpell", 10, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.water, RaceTypesEnum.RaceTypes.none);
+            Card card2 = new Card("FireSpell", 30, CardTypesEnum.CardTypes.spell, ElementTypesEnum.ElementTypes.fire, RaceTypesEnum.RaceTypes.none);
+
+            //ACT & ASSERT
+            Assert.AreEqual(1, GameLogic.calcWinner(card1, card2));
         }
 
         [Test]

@@ -74,13 +74,13 @@ namespace MTCG
 
         public static int calcWinner(Card cardp1, Card cardp2)
         {
-            if (cardp1._weakness == cardp2._racetype && (cardp1._elementweakness == cardp2._elementtype || cardp1._elementweakness == ElementTypesEnum.ElementTypes.none))
+            if ((cardp1._cardtype != CardTypesEnum.CardTypes.spell || cardp2._cardtype != CardTypesEnum.CardTypes.spell) && cardp1._weakness == cardp2._racetype && (cardp1._elementweakness == cardp2._elementtype || cardp1._elementweakness == ElementTypesEnum.ElementTypes.none))
             {
                 Console.WriteLine("Player 2 won the round due to weakness");
                 return 2;
 
             }
-            else if (cardp2._weakness == cardp1._racetype && (cardp2._elementweakness == cardp1._elementtype || cardp2._elementweakness == ElementTypesEnum.ElementTypes.none))
+            else if ((cardp1._cardtype != CardTypesEnum.CardTypes.spell || cardp2._cardtype != CardTypesEnum.CardTypes.spell) && cardp2._weakness == cardp1._racetype && (cardp2._elementweakness == cardp1._elementtype || cardp2._elementweakness == ElementTypesEnum.ElementTypes.none))
             {
                 Console.WriteLine("Player 1 won the round due to weakness");
                 return 1;
