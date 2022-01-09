@@ -308,7 +308,6 @@ namespace MTCGTests
             int max = 4;
             int returnvalue;
 
-
             //ACT + ASSERT
             for (int i = 1; i < 5; i++)
             {
@@ -323,7 +322,6 @@ namespace MTCGTests
             }
             Assert.Pass();
         }
-
 
     }
 }

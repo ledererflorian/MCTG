@@ -969,5 +969,37 @@ namespace MTCG
             disconnect();
         }
 
+        public void updateToken(int userid, string token)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("UPDATE users SET token = @token WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                cmd.Parameters.AddWithValue("token", token);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            disconnect();
+        }
+
+        public string getTokenByUserID(int userid)
+        {
+            connect();
+            using (var cmd = new NpgsqlCommand("SELECT token FROM users WHERE id = @uid", connection))
+            {
+                cmd.Parameters.AddWithValue("uid", userid);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                }
+                string token = Convert.ToString(reader["token"]);
+                disconnect();
+                return token;
+            }
+        }
+
+
+
     }
 }

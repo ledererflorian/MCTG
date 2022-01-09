@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using System.Security.Cryptography;
 
 namespace MTCG
 {
@@ -22,6 +21,7 @@ namespace MTCG
             bool loggedin = false;
             int select;
             int loggedinID = 0;
+            string auttoken = ""; 
             user2._userstack = stack2;
             user2._userdeck = deck2;
 
@@ -32,7 +32,6 @@ namespace MTCG
             {
                 Console.WriteLine("1: Register\n2: Login\n3: Quit");
                 select = InputHandler.getInstance().InputHandlerForInt(1, 3);
-                //Console.Clear(); 
                 switch (select)
                 {
                     case 1:
@@ -42,6 +41,8 @@ namespace MTCG
                         if((loggedinID = LoginUser()) != 0)
                         {
                             loggedin = true;
+                            auttoken = GenerateToken();
+                            db.updateToken(loggedinID, auttoken); 
                         }  else
                         {
                             loggedinID = 0; 
@@ -59,20 +60,19 @@ namespace MTCG
             user1._userstack = stack1;
             user1._userdeck = deck1;
 
-            //Shop shop = new Shop();
-            //Trading trading = new Trading();
-            //CraftCard craftcard = new CraftCard();
-            //Friends friends = new Friends();
-            //GameLogic gamelogic = new GameLogic();
-            //Scoreboard scoreboard = new Scoreboard();
-            //ProfilePage profilepage = new ProfilePage();
-
             Console.Clear(); 
             while (true)
             {
                 Console.WriteLine("1: Start a battle\n2: Create Deck\n3: Shop\n4: Trade Center\n5: Scoreboard\n6: Profile\n7: Craft cards\n8: Friends\n9: Quit");
                 select = InputHandler.getInstance().InputHandlerForInt(1, 9);
-                InputHandler inputhandler = InputHandler.getInstance(); 
+                InputHandler inputhandler = InputHandler.getInstance();
+
+                if(auttoken != db.getTokenByUserID(loggedinID))
+                {
+                    Console.WriteLine("User could not be authenticated!");
+                    return; 
+                }
+
                 switch (select)
                 {
                     case 1:
@@ -97,7 +97,6 @@ namespace MTCG
                         Trading.TradingHub(user1);
                         break;
                     case 5:
-
                         Scoreboard.PrintScoreboard();
                         break; 
                     case 6:
@@ -116,7 +115,21 @@ namespace MTCG
                         continue;
                 }
             }
+        }
 
+        public string GenerateToken() //http://csharp.net-informations.com/string/random.htm 
+        {
+            const string src = "abcdefghijklmnopqrstuvwxyz0123456789";
+            int length = 16;
+            var sb = new StringBuilder();
+            Random RNG = new Random();
+            for (var i = 0; i < length; i++)
+            {
+                var c = src[RNG.Next(0, src.Length)];
+                sb.Append(c);
+            }
+
+            return sb.ToString(); 
         }
 
         public void HandleBattleResult(User user1, User user2, int battlewinner)
@@ -203,7 +216,7 @@ namespace MTCG
             Console.WriteLine("Enter password: ");
 
             ConsoleKey key;
-            do
+            do //https://stackoverflow.com/questions/3404421/password-masking-console-application
             {
                 var keyInfo = Console.ReadKey(intercept: true);
                 key = keyInfo.Key;
@@ -223,7 +236,9 @@ namespace MTCG
             if ((success = db.loginUser(username, password)) == 0)
             {
                 Console.WriteLine();
-                Console.WriteLine("Login failed!");
+                Console.WriteLine("Login failed!\nPress any key to continue!");
+                Console.ReadKey();
+                Console.Clear(); 
                 return 0;
             }
             else
@@ -258,8 +273,7 @@ namespace MTCG
 
         }
 
-
-        public void CreateCardsInDB()
+        public void CreateCardsInDB() //generates random Cards in Database; irrelevant for casual use. helped during developement
         {
             Database db = Database.getInstance(); 
             for(int i = 0; i < 101; i++)
@@ -338,10 +352,7 @@ namespace MTCG
 
                 db.addCard(name, damage, cardtype, elementtype, racetype);
             }
-            
         }
-
-
 
     }
 }
