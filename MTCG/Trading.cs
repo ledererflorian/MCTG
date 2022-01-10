@@ -89,7 +89,6 @@ namespace MTCG
                 }
                 input2 = InputHandler.getInstance().InputHandlerForInt(1, filteredstack.Count());
 
-                //db.deleteCardFromStack(tradeoffers[input - 1]._ownerid, tradeoffers[input - 1]._cardid);
                 db.deleteCardFromStack(user1._userid, filteredstack[input2 - 1]._cardid); //user looses old card
 
                 db.addCardToStack(user1._userid, tradeoffers[input - 1]._cardid); //user gets new card

@@ -116,7 +116,7 @@ namespace MTCG
 
             Console.Clear();
             Console.WriteLine($"Your coins: {_coins}");
-            Console.WriteLine("Do you want to pay 5 Coins to buy a pack consisting of 5 cards? [y/n]"); //add coins check
+            Console.WriteLine("Do you want to pay 5 Coins to buy a pack consisting of 5 cards? [y/n]");
             string input = "";
             
             while(input != "y" || input != "n")

@@ -178,29 +178,6 @@ namespace MTCG
                 return card; 
             }
         }
-        /*
-        public Card getCard(int cardid)
-        {
-            int id = 381; //delete later
-            connect();
-            using (var cmd = new NpgsqlCommand("SELECT * FROM cards WHERE id = @i", connection))
-            {
-                cmd.Parameters.AddWithValue("i", id);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    Card card = new Card((string)reader["name"], (int)reader["damage"], (CardTypesEnum.CardTypes)reader["cardtype"], (ElementTypesEnum.ElementTypes)reader["elementtype"], (RaceTypesEnum.RaceTypes)reader["racetype"]);
-                    Console.WriteLine("CARD FROM DB:");
-                    card.PrintCard();
-                    disconnect();
-
-                }
-
-            }
-        }
-        */
 
         public List<Card> getStack(int userid)
         {
@@ -299,7 +276,7 @@ namespace MTCG
             disconnect();
         }
 
-        public void deleteCardFromStack(int userid, int cardid) //fix duplicate deletion problem, i guess mit stackID //fixed i guess
+        public void deleteCardFromStack(int userid, int cardid)
         {
             connect();
             using (var cmd = new NpgsqlCommand("DELETE FROM stack WHERE id IN(SELECT id FROM stack WHERE userid = @uid AND cardid = @cid LIMIT 1)", connection))
@@ -309,9 +286,7 @@ namespace MTCG
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
             disconnect();
-        }
-
-        
+        } 
 
         public int getCardCount(int userid)
         {
@@ -364,7 +339,7 @@ namespace MTCG
                     disconnect();
                     return cardlist;
                 }
-                return cardlist; //evtl errorhandling in gamelogic/menu, je nach dem
+                return cardlist;
             }
         }
 
@@ -570,7 +545,7 @@ namespace MTCG
                         tradinglist.Add(tradeoffer);
                     }
                 }
-                disconnect(); //CHECKEN OB ALLES GEHT NOCHM FOODEN xd
+                disconnect();
                 return tradinglist;
 
 
@@ -600,7 +575,7 @@ namespace MTCG
                     disconnect();
                     return cardlist;
                 }
-                return cardlist; //ERROR HANDLING IF NO CARDS
+                return cardlist;
 
             }
         }
@@ -935,7 +910,7 @@ namespace MTCG
         public List<Friendrequest> getFriendsbyUserID(int userid)
         {
             connect();
-            using (var cmd = new NpgsqlCommand("SELECT * FROM friends WHERE thisuserid = @uid;", connection))
+            using (var cmd = new NpgsqlCommand("SELECT * FROM friends WHERE thisuserid = @uid AND accepted = true;", connection))
             {
                 cmd.Parameters.AddWithValue("uid", userid);
                 NpgsqlDataReader reader = cmd.ExecuteReader();

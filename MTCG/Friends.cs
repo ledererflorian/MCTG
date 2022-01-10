@@ -48,6 +48,7 @@ namespace MTCG
             {
                 Console.WriteLine("You don't have any friends!\nPress any key to continue");
                 Console.ReadKey();
+                Console.Clear(); 
                 return; 
 
             }
@@ -86,9 +87,11 @@ namespace MTCG
                 case 3:
                     db.deleteFriend(user1._userid, selectedfriend);
                     Console.WriteLine($"You have deleted {friendname} from your friendlist!\nPress any key to continue.");
-                    Console.ReadKey(); 
+                    Console.ReadKey();
+                    Console.Clear(); 
                     break;
                 case 4:
+                    Console.Clear(); 
                     return; 
             }
         }
@@ -111,8 +114,8 @@ namespace MTCG
                 Stack stack2 = new Stack(); 
                 Deck deck2 = new Deck();
 
-                user2._userstack = stack2; //fix later
-                user2._userdeck = deck2; //fix later
+                user2._userstack = stack2; 
+                user2._userdeck = deck2;
 
                 user1._userdeck._deck = LoadCurrentDeck(user1._userid);
                 user2._userdeck._deck = LoadCurrentDeck(user2._userid);
@@ -123,7 +126,9 @@ namespace MTCG
                 Console.Clear(); 
 
                 int battlewinner = GameLogic.BattleLogic(user1, user2);
-                Console.WriteLine("\nPlayer " + battlewinner + " won the match!");
+                Console.WriteLine("\nPlayer " + battlewinner + " won the match!\nPress any key to return to the friends menu!");
+                Console.ReadKey();
+                Console.Clear(); 
                 
             }
         }
