@@ -76,7 +76,9 @@ namespace MTCG
 
                 if (filteredstack.Count() == 0)
                 {
-                    Console.WriteLine("You don't have any cards, that meet the requirement!");
+                    Console.WriteLine("You don't have any cards, that meet the requirement!\nPress any key to continue!");
+                    Console.ReadKey();
+                    Console.Clear(); 
                     return;
                 }
 
@@ -171,6 +173,10 @@ namespace MTCG
             }
             db.deleteCardFromStack(user1._userid, tempstack[input - 1]._cardid);
             db.addTradingOffer(user1._userid, tempstack[input - 1]._cardid, typerequirement, damagerequirement);
+
+            Console.WriteLine("Card successfully submitted!\nPress any key to continue!");
+            Console.ReadKey();
+            Console.Clear(); 
         }
 
 
