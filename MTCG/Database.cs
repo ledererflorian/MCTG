@@ -256,14 +256,14 @@ namespace MTCG
         public void selectCard(int userid, int cardid)
         {
             connect();
-            using (var cmd = new NpgsqlCommand("UPDATE stack SET selected = true WHERE userid = @uid AND cardid = @cid", connection))
+            using (var cmd = new NpgsqlCommand("UPDATE stack SET selected = true WHERE id IN(SELECT id FROM stack WHERE userid = @uid AND cardid = @cid AND selected = false LIMIT 1)", connection))
             {
                 cmd.Parameters.AddWithValue("uid", userid);
                 cmd.Parameters.AddWithValue("cid", cardid);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
             disconnect(); 
-        }
+        } 
 
         public void deselectCards(int userid) 
         {
@@ -383,7 +383,7 @@ namespace MTCG
         public int getOtherRandomUserIDWithActiveDeck(int uid)
         {
             connect();
-            using (var cmd = new NpgsqlCommand("SELECT userid FROM stack WHERE NOT userid = 10 AND selected = true GROUP BY userid HAVING COUNT(userid)  = 4 ORDER BY RANDOM()", connection))
+            using (var cmd = new NpgsqlCommand("SELECT userid FROM stack WHERE NOT userid = @uid AND selected = true GROUP BY userid HAVING COUNT(userid)  = 4 ORDER BY RANDOM()", connection))
             {
                 cmd.Parameters.AddWithValue("uid", uid);
                 NpgsqlDataReader reader = cmd.ExecuteReader();

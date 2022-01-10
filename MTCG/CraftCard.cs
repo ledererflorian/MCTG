@@ -13,7 +13,6 @@ namespace MTCG
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine();
                 Console.WriteLine("1: Craft Elementfragment\n2: Craft new Card\n3: Return to main menu\n");
                 int select = InputHandler.getInstance().InputHandlerForInt(1, 3);
 
@@ -41,7 +40,8 @@ namespace MTCG
 
             if (filteredstack.Count() == 0)
             {
-                Console.WriteLine("You don't have any cards that can be transformed into fragments!");
+                Console.WriteLine("You don't have any cards that can be transformed into fragments!\nPress any key to continue!");
+                Console.ReadKey();
                 return;
             }
 

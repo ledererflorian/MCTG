@@ -78,7 +78,9 @@ namespace MTCG
                     case 1:
                         if(db.getSelectedCardCount(user1._userid) < 4)
                         {
-                            Console.WriteLine("Create a deck before fighting!");
+                            Console.WriteLine("Create a deck before fighting!\nPress any ke to continue!");
+                            Console.ReadKey();
+                            Console.Clear(); 
                             break; 
                         }
 
